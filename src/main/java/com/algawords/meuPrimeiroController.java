@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class meuPrimeiroController {
 
-    @GetMapping("/hello")
+    @GetMapping("api/hello")
     @ResponseBody
     public String hello() {
-        return "Olá !";
+        return "Olá mundo!";
     }
 }
