@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Cliente {
 
@@ -15,6 +14,13 @@ public class Cliente {
     private String email;
     private String telefone;
     private boolean ativo = false;
+
+
+    public Cliente(String nome, String email, String telefone) {
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+    }
 
     public void ativar() {
         this.ativo = true;
