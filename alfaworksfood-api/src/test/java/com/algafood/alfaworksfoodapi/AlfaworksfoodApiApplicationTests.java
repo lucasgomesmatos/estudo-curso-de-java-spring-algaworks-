@@ -1,10 +1,10 @@
-package com.algawords;
+package com.algafood.alfaworksfoodapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AlgawordsapiApplicationTests {
+class AlfaworksfoodApiApplicationTests {
 
     @Test
     void contextLoads() {
