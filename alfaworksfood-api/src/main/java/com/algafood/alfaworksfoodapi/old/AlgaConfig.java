@@ -1,4 +1,4 @@
-package com.algafood.alfaworksfoodapi;
+package com.algafood.alfaworksfoodapi.old;
 
 //@Configuration
 //public class AlgaConfig {
