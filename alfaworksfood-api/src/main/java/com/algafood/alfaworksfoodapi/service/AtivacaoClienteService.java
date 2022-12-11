@@ -3,15 +3,15 @@ package com.algafood.alfaworksfoodapi.service;
 import com.algafood.alfaworksfoodapi.modelo.Cliente;
 import com.algafood.alfaworksfoodapi.notificacao.Notificador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class AtivacaoClienteService {
 
+    @Qualifier("sms")
     @Autowired
-    private List<Notificador> notificadores;
+    private Notificador notificador;
 
 //    @Autowired
 //    public AtivacaoClienteService(Notificador notificador) {
@@ -27,10 +27,7 @@ public class AtivacaoClienteService {
 //    }
 
     public void ativar(Cliente cliente) {
-
-        for (Notificador notificador: notificadores) {
-            notificador.notificar(cliente, "Seu cadastro no sistema está ativo");
-        }
+        notificador.notificar(cliente, "Seu cadastro no sistema está ativo");
 
     }
 }
