@@ -1,15 +1,18 @@
 package com.algafood.alfaworksfoodapi.service;
 
 import com.algafood.alfaworksfoodapi.modelo.Cliente;
+import com.algafood.alfaworksfoodapi.notificacao.NivelUrgencia;
 import com.algafood.alfaworksfoodapi.notificacao.Notificador;
+import com.algafood.alfaworksfoodapi.notificacao.TipoDoNotificador;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class AtivacaoClienteService {
 
-    @Qualifier("sms")
+
+    @TipoDoNotificador(NivelUrgencia.SEM_URGENCIA)
     @Autowired
     private Notificador notificador;
 

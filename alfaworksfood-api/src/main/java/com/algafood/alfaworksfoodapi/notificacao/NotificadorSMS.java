@@ -2,7 +2,8 @@ package com.algafood.alfaworksfoodapi.notificacao;
 import com.algafood.alfaworksfoodapi.modelo.Cliente;
 import org.springframework.stereotype.Component;;
 
-@Component("sms")
+@TipoDoNotificador(NivelUrgencia.URGENTE)
+@Component
 public class NotificadorSMS  implements Notificador{
 
     @Override
