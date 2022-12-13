@@ -5,10 +5,9 @@ import com.algafood.alfaworksfoodapi.notificacao.NivelUrgencia;
 import com.algafood.alfaworksfoodapi.notificacao.Notificador;
 import com.algafood.alfaworksfoodapi.notificacao.TipoDoNotificador;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 
-@Component
+//@Component
 public class AtivacaoClienteService {
 
 
@@ -28,6 +27,15 @@ public class AtivacaoClienteService {
 //    public void setNotificador(Notificador notificador) {
 //        this.notificador = notificador;
 //    }
+
+//    @PostConstruct
+    public void init() {
+        System.out.println("INIT " + notificador);
+    }
+//    @PreDestroy
+    public void destroy() {
+        System.out.println("DESTROY " + notificador);
+    }
 
     public void ativar(Cliente cliente) {
         notificador.notificar(cliente, "Seu cadastro no sistema está ativo");
