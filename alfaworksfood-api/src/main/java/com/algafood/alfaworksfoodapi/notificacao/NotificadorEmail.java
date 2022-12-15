@@ -1,7 +1,6 @@
 package com.algafood.alfaworksfoodapi.notificacao;
 
 import com.algafood.alfaworksfoodapi.modelo.Cliente;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
