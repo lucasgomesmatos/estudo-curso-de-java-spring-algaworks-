@@ -1,13 +1,10 @@
 package com.algafood.alfaworksfoodapi.notificacao;
 
 import com.algafood.alfaworksfoodapi.modelo.Cliente;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 
-@Profile("dev")
+//@Profile("dev")
 @TipoDoNotificador(NivelUrgencia.SEM_URGENCIA)
-@Component
+//@Component
 public class NotificadorEmailMock implements Notificador {
 
     public NotificadorEmailMock() {
