@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import com.algaworks.algafood.domain.model.Cozinha;
 import org.springframework.transaction.annotation.Transactional;
 
+// 03.11
+
 @Component
 public class CadastroCozinha {
 
@@ -28,6 +30,12 @@ public class CadastroCozinha {
 
 	public Cozinha buscar(Long id) {
 		return  manager.find(Cozinha.class, id);
+	}
+
+	@Transactional
+	public void remover(Cozinha cozinha) {
+		cozinha = buscar(cozinha.getId());
+		manager.remove(cozinha);
 	}
 	
 }
