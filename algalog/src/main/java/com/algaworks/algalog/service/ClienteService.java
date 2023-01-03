@@ -18,6 +18,11 @@ public class ClienteService {
     @Autowired
     ClienteRepository clienteRepository;
 
+    public Cliente buscarClienteExistente(Long clienteId) {
+        return clienteRepository.findById(clienteId)
+                        .orElseThrow(() -> new NegocioExpection("Cliente não encontrado"));
+    }
+
     public List<Cliente> listar() {
         return clienteRepository.findAll();
     }
