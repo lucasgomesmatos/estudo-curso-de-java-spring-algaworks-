@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -43,6 +44,19 @@ public class CozinhaController {
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaRepository.salvar(cozinha));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Cozinha> atualizar(@Valid @PathVariable Long id, @RequestBody Cozinha cozinha) {
+        Cozinha cozinhaAtual = cozinhaRepository.buscar(id);
+
+        if(cozinhaAtual == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        cozinhaAtual.setNome(cozinha.getNome());
+
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaRepository.salvar(cozinhaAtual));
     }
 
 }
