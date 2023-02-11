@@ -9,8 +9,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
-public class CadastroCozinhaService {
+public class CozinhaService {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
@@ -18,6 +20,16 @@ public class CadastroCozinhaService {
     @Transactional
     public Cozinha salvar(Cozinha cozinha) {
         return cozinhaRepository.salvar(cozinha);
+    }
+
+    @Transactional
+    public Cozinha buscar(Long id) {
+        return cozinhaRepository.buscar(id);
+    }
+
+    @Transactional
+    public List<Cozinha> listar( ) {
+        return cozinhaRepository.listar();
     }
 
     public void remover(Long id) {
@@ -28,7 +40,6 @@ public class CadastroCozinhaService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pode ser removida, pois está em uso", id));
         }
-
 
     }
 }

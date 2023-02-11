@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.model.Estado;
-import com.algaworks.algafood.domain.service.EstadoService;
+import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.service.CidadeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,50 +13,50 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/estados")
-public class EstadoController {
+@RequestMapping("api/cidades")
+public class CidadeController {
 
     @Autowired
-    private EstadoService estadoService;
+    private CidadeService cidadeService;
 
     @GetMapping
-    public ResponseEntity<List<Estado>> listar() {
-        return ResponseEntity.status(HttpStatus.OK).body(estadoService.listar());
+    public ResponseEntity<List<Cidade>> listar() {
+        return ResponseEntity.status(HttpStatus.OK).body(cidadeService.listar());
 
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long id) {
-        Estado estado = estadoService.buscar(id);
+    public ResponseEntity<Cidade> buscar(@PathVariable Long id) {
+        Cidade cidade = cidadeService.buscar(id);
 
-        if (estado == null) {
+        if (cidade == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(estado);
+        return ResponseEntity.status(HttpStatus.OK).body(cidade);
     }
 
     @PostMapping
-    public ResponseEntity<Estado> salvar(@RequestBody Estado estado) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(estadoService.adicionar(estado));
+    public ResponseEntity<Cidade> salvar(@RequestBody Cidade cidade) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.adicionar(cidade));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
-        Estado estadoAtual = estadoService.buscar(id);
+    public ResponseEntity<Cidade> atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
+        Cidade cidadeAtual = cidadeService.buscar(id);
 
-        if (estadoAtual == null) {
+        if (cidadeAtual == null) {
             return ResponseEntity.notFound().build();
         }
 
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
+        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
-        return ResponseEntity.status(HttpStatus.OK).body(estadoService.adicionar(estadoAtual));
+        return ResponseEntity.status(HttpStatus.OK).body(cidadeService.adicionar(cidadeAtual));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         try {
-            estadoService.remover(id);
+            cidadeService.remover(id);
             return ResponseEntity.noContent().build();
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.notFound().build();
