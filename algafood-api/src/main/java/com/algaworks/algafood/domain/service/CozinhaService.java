@@ -32,6 +32,11 @@ public class CozinhaService {
         return cozinhaRepository.listar();
     }
 
+    @Transactional
+    public List<Cozinha> listarPorNome( String nome) {
+        return cozinhaRepository.listarPorNome(nome);
+    }
+
     public void remover(Long id) {
         try {
             cozinhaRepository.remover(id);

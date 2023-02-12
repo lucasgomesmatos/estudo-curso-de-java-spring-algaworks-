@@ -3,7 +3,6 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,13 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/por-nome")
+    public ResponseEntity<List<Cozinha>> listarPorNome(@RequestParam String nome) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listarPorNome(nome));
+    }
+
+    @GetMapping("{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
         Cozinha cozinha = cozinhaService.buscar(id);
 
