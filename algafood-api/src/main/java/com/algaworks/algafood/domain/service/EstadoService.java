@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstadoService {
@@ -15,21 +16,23 @@ public class EstadoService {
     private EstadoRepository estadoRepository;
 
     public List<Estado> listar() {
-        return estadoRepository.listar();
+        return estadoRepository.findAll();
     }
 
     @Transactional
     public Estado adicionar(Estado estado) {
-        return estadoRepository.salvar(estado);
+        return estadoRepository.save(estado);
     }
 
     public Estado buscar(Long id) {
-        return estadoRepository.buscar(id);
+        Optional<Estado> estado = estadoRepository.findById(id);
+
+        return estado.get();
     }
 
     @Transactional
     public void remover(Long id) {
-        estadoRepository.remover(id);
+        estadoRepository.deleteById(id);
 
     }
 

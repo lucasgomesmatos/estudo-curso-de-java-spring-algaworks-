@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CidadeService {
@@ -15,21 +16,22 @@ public class CidadeService {
     private CidadeRepository cidadeRepository;
 
     public List<Cidade> listar() {
-        return cidadeRepository.listar();
+        return cidadeRepository.findAll();
     }
 
     @Transactional
     public Cidade adicionar(Cidade cidade) {
-        return cidadeRepository.salvar(cidade);
+        return cidadeRepository.save(cidade);
     }
 
     public Cidade buscar(Long id) {
-        return cidadeRepository.buscar(id);
+        Optional<Cidade> cidade = cidadeRepository.findById(id);
+        return cidade.get();
     }
 
     @Transactional
     public void remover(Long id) {
-        cidadeRepository.remover(id);
+        cidadeRepository.deleteById(id);
 
     }
 

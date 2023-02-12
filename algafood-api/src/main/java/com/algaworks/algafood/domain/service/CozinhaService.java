@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CozinhaService {
@@ -19,27 +20,29 @@ public class CozinhaService {
 
     @Transactional
     public Cozinha salvar(Cozinha cozinha) {
-        return cozinhaRepository.salvar(cozinha);
+        return cozinhaRepository.save(cozinha);
     }
 
     @Transactional
     public Cozinha buscar(Long id) {
-        return cozinhaRepository.buscar(id);
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
+        return cozinha.get();
     }
 
     @Transactional
     public List<Cozinha> listar( ) {
-        return cozinhaRepository.listar();
+
+        return cozinhaRepository.findAll();
     }
 
-    @Transactional
-    public List<Cozinha> listarPorNome( String nome) {
-        return cozinhaRepository.listarPorNome(nome);
-    }
+//    @Transactional
+//    public List<Cozinha> listarPorNome( String nome) {
+//        return cozinhaRepository.findByName(nome);
+//    }
 
     public void remover(Long id) {
         try {
-            cozinhaRepository.remover(id);
+            cozinhaRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeEmUsoException(String.format("Não existe um cadastro de cozinha com o código %d ", id));
         } catch (DataIntegrityViolationException e) {
