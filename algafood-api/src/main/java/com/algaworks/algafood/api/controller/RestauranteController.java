@@ -42,8 +42,8 @@ public class RestauranteController {
 
     @GetMapping("por-taxaFrete")
     public ResponseEntity<List<Restaurante>> buscarPorTaxa(
-            @Valid @RequestParam BigDecimal taxaInicial,
-            @RequestParam BigDecimal taxaFinal, @RequestParam String nome) {
+            @Valid @RequestParam String nome, @RequestParam BigDecimal taxaInicial,
+            @RequestParam BigDecimal taxaFinal) {
 
         return ResponseEntity.status(HttpStatus.OK).body(restauranteService.buscarPorTaxa(nome, taxaInicial, taxaFinal));
     }
