@@ -35,10 +35,10 @@ public class CozinhaService {
         return cozinhaRepository.findAll();
     }
 
-//    @Transactional
-//    public List<Cozinha> listarPorNome( String nome) {
-//        return cozinhaRepository.findByName(nome);
-//    }
+    @Transactional
+    public List<Cozinha> listarPorNome( String nome) {
+        return cozinhaRepository.findByNomeContaining(nome);
+    }
 
     public void remover(Long id) {
         try {

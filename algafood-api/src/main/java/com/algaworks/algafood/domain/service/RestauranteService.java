@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,12 @@ public class RestauranteService {
 
         Optional<Restaurante> restaurante = restauranteRepository.findById(id);
         return restaurante.get();
+
+    }
+
+    public List<Restaurante> buscarPorTaxa(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+
+        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
 
     }
 }

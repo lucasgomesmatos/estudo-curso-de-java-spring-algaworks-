@@ -27,11 +27,11 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
     }
 
-//    @GetMapping("/por-nome")
-//    public ResponseEntity<List<Cozinha>> listarPorNome(@RequestParam String nome) {
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listarPorNome(nome));
-//    }
+    @GetMapping("/por-nome")
+    public ResponseEntity<List<Cozinha>> listarPorNome(@RequestParam String nome) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listarPorNome(nome));
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
