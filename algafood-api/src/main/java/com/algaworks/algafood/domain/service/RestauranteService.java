@@ -41,7 +41,7 @@ public class RestauranteService {
 
     public List<Restaurante> buscarPorTaxa(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
 
-        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
+        return restauranteRepository.consultar(nome, taxaInicial, taxaFinal);
 
     }
 }
