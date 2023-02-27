@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -40,13 +39,6 @@ public class RestauranteController {
         return ResponseEntity.status(HttpStatus.OK).body(restaurante);
     }
 
-    @GetMapping("por-taxaFrete")
-    public ResponseEntity<List<Restaurante>> buscarPorTaxa(
-            @Valid @RequestParam String nome, @RequestParam BigDecimal taxaInicial,
-            @RequestParam BigDecimal taxaFinal) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteService.buscarPorTaxa(nome, taxaInicial, taxaFinal));
-    }
 
     @PostMapping
     public ResponseEntity<Restaurante> adicionar(@RequestBody Restaurante restaurante) {
