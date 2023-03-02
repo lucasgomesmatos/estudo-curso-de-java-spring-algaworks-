@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -43,5 +44,9 @@ public class RestauranteService {
 
         return restauranteRepository.consultar(nome, taxaInicial, taxaFinal);
 
+    }
+
+    public List<Restaurante> findAll(Specification<Restaurante> restauranteSpec) {
+        return restauranteRepository.findAll(restauranteSpec);
     }
 }

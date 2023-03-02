@@ -2,6 +2,8 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
+import com.algaworks.algafood.infrastructure.spec.RestauranteComFreteGratisSpec;
+import com.algaworks.algafood.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +35,9 @@ public class TesteController {
     public ResponseEntity<List<Restaurante>> buscarPorTaxa(String nome) {
 
         var comFretegratis = new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
-        return ResponseEntity.status(HttpStatus.OK).body();
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteService.findAll(comFretegratis.and(comNomeSemelhante)));
     }
 
     // 05-16
