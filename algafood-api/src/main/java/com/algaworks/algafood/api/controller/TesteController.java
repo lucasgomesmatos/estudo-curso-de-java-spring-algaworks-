@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import com.algaworks.algafood.infrastructure.spec.RestauranteComFreteGratisSpec;
 import com.algaworks.algafood.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
+import com.algaworks.algafood.infrastructure.spec.RestauranteSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +38,12 @@ public class TesteController {
         var comFretegratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteService.findAll(comFretegratis.and(comNomeSemelhante)));
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteService.findAll(
+                RestauranteSpecs.comFreteGratis()
+                        .and(RestauranteSpecs.comNomeSemelhante(nome))));
     }
 
-    // 05-16
+    // 05-17
 
 
 
