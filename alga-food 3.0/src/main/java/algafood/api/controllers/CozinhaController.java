@@ -1,5 +1,6 @@
 package algafood.api.controllers;
 
+import algafood.api.dtos.CozinhaDTO;
 import algafood.domain.models.Cozinha;
 import algafood.domain.service.CozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
     }
 
-    @GetMapping(produces =  MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<List<Cozinha>> listar2() {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
     }
@@ -30,6 +31,11 @@ public class CozinhaController {
     @GetMapping("{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable(value = "cozinhaId") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.buscar(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Cozinha> salvar(@RequestBody CozinhaDTO cozinhaDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaService.adicionar(cozinhaDTO));
     }
 
 }

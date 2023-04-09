@@ -1,5 +1,6 @@
 package algafood.domain.service;
 
+import algafood.api.dtos.CozinhaDTO;
 import algafood.domain.exception.ApiRequestException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
@@ -24,8 +25,10 @@ public class CozinhaService {
     }
 
     @Transactional
-    public Cozinha adicionar(Cozinha cidade) {
-        return cozinhaRepository.save(cidade);
+    public Cozinha adicionar(CozinhaDTO cozinhaDto) {
+        var cozinha = new Cozinha(cozinhaDto.getNome());
+
+        return cozinhaRepository.save(cozinha);
     }
 
     public Cozinha buscar(Long id) {
