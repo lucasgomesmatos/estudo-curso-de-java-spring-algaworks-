@@ -38,4 +38,8 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaService.adicionar(cozinhaDTO));
     }
 
+    @PutMapping("{cozinhaId}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable(value = "cozinhaId") Long id, @RequestBody CozinhaDTO cozinhaDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.atualizar(id, cozinhaDTO));
+    }
 }
