@@ -1,11 +1,12 @@
 package algafood.domain.service;
 
-import algafood.domain.exception.ApiRequestException;
+import algafood.domain.exception.ApiHandlerException;
 import algafood.domain.models.Cidade;
 import algafood.domain.repositories.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -16,8 +17,9 @@ public class CidadeService {
 
     private Cidade buscarPorId(Long id) {
         return cidadeRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Cidade nao encontado para o id: "+ id));
+                .orElseThrow(() -> new ApiHandlerException("Cozinha não econtrada para o id: " + id));
     }
+
     public List<Cidade> listar() {
         return cidadeRepository.findAll();
     }

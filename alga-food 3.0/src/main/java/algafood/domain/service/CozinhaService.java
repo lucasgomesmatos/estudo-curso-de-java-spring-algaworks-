@@ -1,11 +1,12 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.CozinhaDTO;
-import algafood.domain.exception.ApiRequestException;
+import algafood.domain.exception.ApiHandlerException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ public class CozinhaService {
 
     private Cozinha buscarPorId(Long id) {
         return cozinhaRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Cozinha nao encontado para o id: " + id));
+                .orElseThrow(() -> new ApiHandlerException("Cozinha não econtrada para o id: " + id));
     }
 
     public List<Cozinha> listar() {
@@ -39,10 +40,15 @@ public class CozinhaService {
 
     @Transactional
     public void remover(Long id) {
-        buscarPorId(id);
-        cozinhaRepository.deleteById(id);
+        try {
+            buscarPorId(id);
+            cozinhaRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ApiHandlerException("Cozinha não econtrada para o id: " + id);
+        }
     }
 
+    @Transactional
     public Cozinha atualizar(Long id, CozinhaDTO cozinhaDTO) {
         var cozinha = buscarPorId(id);
         BeanUtils.copyProperties(cozinhaDTO, cozinha, "id");

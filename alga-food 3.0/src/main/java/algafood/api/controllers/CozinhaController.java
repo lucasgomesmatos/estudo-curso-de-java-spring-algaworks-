@@ -42,4 +42,10 @@ public class CozinhaController {
     public ResponseEntity<Cozinha> atualizar(@PathVariable(value = "cozinhaId") Long id, @RequestBody CozinhaDTO cozinhaDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.atualizar(id, cozinhaDTO));
     }
+
+    @DeleteMapping("{cozinhaId}")
+    public ResponseEntity<Void> remover(@PathVariable(value = "cozinhaId") Long id) {
+        cozinhaService.remover(id);
+        return ResponseEntity.noContent().build();
+    }
 }
