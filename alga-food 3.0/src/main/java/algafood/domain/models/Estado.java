@@ -21,6 +21,10 @@ public class Estado {
     @Column(nullable = false)
     private String nome;
 
+    public Estado(String nome) {
+        this.nome = nome;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

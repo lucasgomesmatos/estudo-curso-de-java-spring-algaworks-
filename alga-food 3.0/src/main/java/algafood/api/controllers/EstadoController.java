@@ -1,13 +1,12 @@
 package algafood.api.controllers;
 
+import algafood.api.dtos.EstadoDTO;
 import algafood.domain.models.Estado;
-import algafood.domain.repositories.EstadoRepository;
+import algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,13 +15,32 @@ import java.util.List;
 public class EstadoController {
 
     @Autowired
-    private EstadoRepository estadoRepository;
+    private EstadoService estadoService;
 
     @GetMapping
     public ResponseEntity<List<Estado>> listar() {
-        return ResponseEntity.status(HttpStatus.OK).body(estadoRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(estadoService.listar());
     }
 
-    //04-12
+    @GetMapping("{estadoId}")
+    public ResponseEntity<Estado> buscar(@PathVariable(value = "estadoId") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(estadoService.buscar(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Estado> salvar(@RequestBody EstadoDTO estadoDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoService.adicionar(estadoDTO));
+    }
+
+    @PutMapping("{estadoId}")
+    public ResponseEntity<Estado> atualizar(@PathVariable(value = "estadoId") Long id, @RequestBody EstadoDTO estadoDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(estadoService.atualizar(id, estadoDTO));
+    }
+
+    @DeleteMapping("{estadoId}")
+    public ResponseEntity<Void> remover(@PathVariable(value = "estadoId") Long id) {
+        estadoService.remover(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

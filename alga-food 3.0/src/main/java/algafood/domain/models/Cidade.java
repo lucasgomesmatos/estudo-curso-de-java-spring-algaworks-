@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.Objects;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,6 +23,8 @@ public class Cidade {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Estado estado;
+
+
 
     @Override
     public boolean equals(Object o) {
