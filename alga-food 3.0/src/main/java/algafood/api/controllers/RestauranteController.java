@@ -3,16 +3,20 @@ package algafood.api.controllers;
 import algafood.api.dtos.RestauranteDTO;
 import algafood.domain.models.Restaurante;
 import algafood.domain.service.RestauranteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(value = "api/restaurantes") //, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/restaurantes")
 public class RestauranteController {
 
     @Autowired
@@ -43,4 +47,48 @@ public class RestauranteController {
         restauranteService.remover(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("{restauranteId}")
+    public ResponseEntity<Restaurante> atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos) {
+
+        var restauranteAtual = restauranteService.buscar(id);
+
+        if(restauranteAtual == null) {
+            ResponseEntity.notFound().build();
+        }
+
+        mergeRestaurante(campos, restauranteAtual);
+        return atualizar(id, new RestauranteDTO(restauranteAtual));
+    }
+
+    private static void mergeRestaurante(Map<String, Object> campos, Restaurante restauranteAtual) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        // Transforma os campos em propriedades serializadas do restaurante
+        Restaurante restauranteOrigem = objectMapper.convertValue(campos, Restaurante.class);
+
+        campos.forEach((nomePropriedade, valorPropriedade) -> {
+
+            // Busca cada campo alterado referente a cada propriedade de restaurante
+            Field campo = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+
+            // acessa as propriedades privadas
+            campo.setAccessible(true);
+
+            // Busca as propridades da serialização de restauranteOrigem
+            Object novoValor = ReflectionUtils.getField(campo, restauranteOrigem);
+
+
+            /**
+             * Seta os valores alterados nas propridades do restauranteAtual
+             *  (nome == nome) = novoValor
+             */
+            ReflectionUtils.setField(campo, restauranteAtual, novoValor);
+
+
+            System.out.println(nomePropriedade + " = " + novoValor);
+            System.out.println(novoValor.getClass());
+        });
+    }
+
 }
