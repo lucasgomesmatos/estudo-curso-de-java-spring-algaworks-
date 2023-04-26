@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/teste")
@@ -45,8 +46,12 @@ public class TesteController {
     }
 
     @GetMapping("/restaurantes/por-nome")
-    public ResponseEntity<List<Restaurante>> restaurantePoNome(@RequestParam String nome, @RequestParam Long cozinhaId) {
-
+    public ResponseEntity<List<Restaurante>> restaurantePorNome(@RequestParam String nome, @RequestParam Long cozinhaId) {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId));
+    }
+
+    @GetMapping("/restaurantes/primeiro-por-nome")
+    public ResponseEntity<Optional<Restaurante>> restaurantePrimeiroPorNome(@RequestParam String nome) {
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.findFirstByNomeContaining(nome));
     }
 }
