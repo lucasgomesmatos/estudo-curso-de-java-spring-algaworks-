@@ -64,4 +64,12 @@ public class TesteController {
     public ResponseEntity<Integer> restaurantesCountPorCozinha(@RequestParam Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.countByCozinhaId(id));
     }
+
+    @GetMapping("/restaurantes/por-nome-e-frete")
+    public ResponseEntity<List<Restaurante>> restaurantesPorNomeFrete(
+            @RequestParam String nome,
+            @RequestParam BigDecimal taxaFreteinicial,
+            @RequestParam BigDecimal taxaFreteFinal) {
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.find(nome, taxaFreteinicial, taxaFreteFinal));
+    }
 }
