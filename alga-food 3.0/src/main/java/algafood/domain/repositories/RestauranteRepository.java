@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
@@ -16,4 +17,8 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
     List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinhaId);
 
     Optional<Restaurante> findFirstByNomeContaining(String nome);
+
+    List<Restaurante> findTop2ByNomeContaining(String nome);
+
+    int countByCozinhaId(Long conzinha);
 }

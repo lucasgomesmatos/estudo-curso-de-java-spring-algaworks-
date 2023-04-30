@@ -58,7 +58,8 @@ public class RestauranteController {
         }
 
         mergeRestaurante(campos, restauranteAtual);
-        return atualizar(id, new RestauranteDTO(restauranteAtual));
+        var restauranteDto = new RestauranteDTO(restauranteAtual);
+        return atualizar(id, restauranteDto);
     }
 
     private static void mergeRestaurante(Map<String, Object> campos, Restaurante restauranteAtual) {

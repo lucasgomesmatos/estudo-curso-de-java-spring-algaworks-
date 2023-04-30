@@ -54,4 +54,14 @@ public class TesteController {
     public ResponseEntity<Optional<Restaurante>> restaurantePrimeiroPorNome(@RequestParam String nome) {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.findFirstByNomeContaining(nome));
     }
+
+    @GetMapping("/restaurantes/top2-por-nome")
+    public ResponseEntity<List<Restaurante>> restaurantesDoisPrimeirosPorNome(@RequestParam String nome) {
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.findTop2ByNomeContaining(nome));
+    }
+
+    @GetMapping("/restaurantes/count-por-cozinha")
+    public ResponseEntity<Integer> restaurantesCountPorCozinha(@RequestParam Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.countByCozinhaId(id));
+    }
 }
