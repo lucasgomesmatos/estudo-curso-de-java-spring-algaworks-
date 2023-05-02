@@ -67,9 +67,9 @@ public class TesteController {
 
     @GetMapping("/restaurantes/por-nome-e-frete")
     public ResponseEntity<List<Restaurante>> restaurantesPorNomeFrete(
-            @RequestParam String nome,
-            @RequestParam BigDecimal taxaFreteinicial,
-            @RequestParam BigDecimal taxaFreteFinal) {
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.find(nome, taxaFreteinicial, taxaFreteFinal));
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) BigDecimal taxaFreteinicial,
+            @RequestParam(required = false) BigDecimal taxaFreteFinal) {
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.consultar(nome, taxaFreteinicial, taxaFreteFinal));
     }
 }
