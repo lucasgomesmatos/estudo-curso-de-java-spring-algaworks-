@@ -5,6 +5,8 @@ import algafood.domain.models.Cozinha;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.CozinhaRepository;
 import algafood.domain.repositories.RestauranteRepository;
+import algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,5 +73,15 @@ public class TesteController {
             @RequestParam(required = false) BigDecimal taxaFreteinicial,
             @RequestParam(required = false) BigDecimal taxaFreteFinal) {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.consultar(nome, taxaFreteinicial, taxaFreteFinal));
+    }
+
+    @GetMapping("/restaurantes/com-frete-gratis")
+    public ResponseEntity<List<Restaurante>> restaurantesComFreteGratis(
+            @RequestParam(required = false) String nome) {
+
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante)));
     }
 }
