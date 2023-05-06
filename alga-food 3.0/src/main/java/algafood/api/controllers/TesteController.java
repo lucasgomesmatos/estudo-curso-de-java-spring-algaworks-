@@ -5,8 +5,6 @@ import algafood.domain.models.Cozinha;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.CozinhaRepository;
 import algafood.domain.repositories.RestauranteRepository;
-import algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,9 +77,12 @@ public class TesteController {
     public ResponseEntity<List<Restaurante>> restaurantesComFreteGratis(
             @RequestParam(required = false) String nome) {
 
-        var comFreteGratis = new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.findComFreteGratis(nome));
+    }
 
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante)));
+    @GetMapping("/restaurantes/primeiro")
+    public ResponseEntity<Optional<Restaurante>> restaurantesPrimeiro() {
+
+        return ResponseEntity.status(HttpStatus.OK).body(restauranteRepository.buscarPrimeiro());
     }
 }
