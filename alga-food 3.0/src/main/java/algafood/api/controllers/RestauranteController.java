@@ -23,7 +23,7 @@ public class RestauranteController {
     private RestauranteService restauranteService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Restaurante>> listar1() {
+    public ResponseEntity<List<Restaurante>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteService.listar());
     }
 

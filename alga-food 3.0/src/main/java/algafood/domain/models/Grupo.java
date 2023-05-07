@@ -7,43 +7,37 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
-public class Produto {
-
+public class Grupo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String descricao;
-
-    @Column(nullable = false)
-    private BigDecimal preco;
-
-    @Column(nullable = false)
-    private Boolean ativo;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Restaurante restaurante;
+    @ManyToMany
+    @JoinTable(
+            name = "grupo_permissao",
+            joinColumns = @JoinColumn(name = "grupo_id"),
+            inverseJoinColumns = @JoinColumn(name = "permissao_id")
+    )
+    private List<Permissao> permissoes = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Produto produto = (Produto) o;
-        return getId() != null && Objects.equals(getId(), produto.getId());
+        Grupo grupo = (Grupo) o;
+        return getId() != null && Objects.equals(getId(), grupo.getId());
     }
 
     @Override

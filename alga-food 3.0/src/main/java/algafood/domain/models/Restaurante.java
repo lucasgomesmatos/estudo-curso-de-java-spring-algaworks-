@@ -58,6 +58,10 @@ public class Restaurante {
     )
     private List<FormaPagamento> formaPagamentos = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    private List<Produto> produtos = new ArrayList<>();
+
 
     @Override
     public boolean equals(Object o) {
