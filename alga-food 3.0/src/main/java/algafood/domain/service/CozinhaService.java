@@ -1,7 +1,7 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.CozinhaDTO;
-import algafood.domain.exception.ApiHandlerException;
+import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +20,7 @@ public class CozinhaService {
 
     private Cozinha buscarPorId(Long id) {
         return cozinhaRepository.findById(id)
-                .orElseThrow(() -> new ApiHandlerException("Cozinha não econtrada para o id: " + id));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cozinha não econtrada para o id: " + id));
     }
 
     public List<Cozinha> listar() {
@@ -44,7 +44,7 @@ public class CozinhaService {
             buscarPorId(id);
             cozinhaRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new ApiHandlerException("Cozinha não econtrada para o id: " + id);
+            throw new EntidadeNaoEncontradaException("Cozinha não econtrada para o id: " + id);
         }
     }
 

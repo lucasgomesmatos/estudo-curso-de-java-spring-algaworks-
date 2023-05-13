@@ -1,7 +1,7 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.CidadeDTO;
-import algafood.domain.exception.ApiHandlerException;
+import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.models.Cidade;
 import algafood.domain.repositories.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CidadeService {
 
     private Cidade buscarPorId(Long id) {
         return cidadeRepository.findById(id)
-                .orElseThrow(() -> new ApiHandlerException("Cidade não econtrada para o id: " + id));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cidade não econtrada para o id: " + id));
     }
 
     public List<Cidade> listar() {

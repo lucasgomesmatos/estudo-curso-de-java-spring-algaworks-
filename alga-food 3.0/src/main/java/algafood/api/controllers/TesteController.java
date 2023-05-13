@@ -1,6 +1,6 @@
 package algafood.api.controllers;
 
-import algafood.domain.exception.ApiHandlerException;
+import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.CozinhaRepository;
@@ -35,7 +35,7 @@ public class TesteController {
     @GetMapping("/cozinhas/por-nome/unica")
     public ResponseEntity<Cozinha> conhizhasPorNomeUnico(@RequestParam String nome) {
 
-        var cozinha = cozinhaRepository.findByNome(nome).orElseThrow(() -> new ApiHandlerException("Cozinha não encontrada"));
+        var cozinha = cozinhaRepository.findByNome(nome).orElseThrow(() -> new EntidadeNaoEncontradaException("Cozinha não encontrada"));
         return ResponseEntity.status(HttpStatus.OK).body(cozinha);
     }
 

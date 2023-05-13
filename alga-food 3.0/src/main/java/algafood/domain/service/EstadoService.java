@@ -1,7 +1,7 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.EstadoDTO;
-import algafood.domain.exception.ApiHandlerException;
+import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.models.Estado;
 import algafood.domain.repositories.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class EstadoService {
 
     private Estado buscarPorId(Long id) {
         return estadoRepository.findById(id)
-                .orElseThrow(() -> new ApiHandlerException("Estado não econtrada para o id: " + id));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Estado não econtrada para o id: " + id));
     }
 
     public List<Estado> listar() {
