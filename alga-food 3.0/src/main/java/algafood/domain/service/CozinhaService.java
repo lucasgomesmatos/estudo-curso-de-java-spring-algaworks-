@@ -1,6 +1,7 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.CozinhaDTO;
+import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
@@ -44,7 +45,8 @@ public class CozinhaService {
             buscarPorId(id);
             cozinhaRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeNaoEncontradaException("Cozinha não econtrada para o id: " + id);
+
+            throw new EntidadeEmUsoException("Cozinha não econtrada para o id: " + id);
         }
     }
 
