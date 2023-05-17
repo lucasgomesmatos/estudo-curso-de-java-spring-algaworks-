@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND ) // reason = "Entidade não encontada
-public class EntidadeNaoEncontradaException extends RuntimeException {
+public class NegocioException extends RuntimeException {
 
-    public EntidadeNaoEncontradaException(String mensagem) {
+    public NegocioException(String mensagem) {
         super( mensagem);
     }
 }
