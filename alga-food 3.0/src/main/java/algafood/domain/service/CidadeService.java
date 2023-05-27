@@ -32,12 +32,15 @@ public class CidadeService {
     public Cidade adicionar(CidadeDTO cidadeDTO) {
         var estado = estadoService.buscar(cidadeDTO.getIdEstado());
 
+
         var cidade = Cidade.builder()
                 .nome(cidadeDTO.getNome())
                 .estado(estado)
                 .build();
 
+
         return cidadeRepository.save(cidade);
+
     }
 
     public Cidade buscar(Long id) {
@@ -52,11 +55,13 @@ public class CidadeService {
 
     @Transactional
     public Cidade atualizar(Long id, CidadeDTO cidadeDTO) {
-        var cidade = buscarPorId(id);
-        var estado = estadoService.buscar(cidadeDTO.getIdEstado());
 
+        var estado = estadoService.buscar(cidadeDTO.getIdEstado());
+        var cidade = buscarPorId(id);
         cidade.setNome(cidadeDTO.getNome());
         cidade.setEstado(estado);
+
         return cidadeRepository.save(cidade);
+
     }
 }
