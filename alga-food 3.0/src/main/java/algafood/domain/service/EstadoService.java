@@ -1,7 +1,7 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.EstadoDTO;
-import algafood.domain.exception.EntidadeNaoEncontradaException;
+import algafood.domain.exception.EstadoNaoEncontradoException;
 import algafood.domain.models.Estado;
 import algafood.domain.repositories.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class EstadoService {
 
     private Estado buscarPorId(Long id) {
         return estadoRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Estado não econtrada para o id: " + id));
+                .orElseThrow(() -> new EstadoNaoEncontradoException(id));
     }
 
     public List<Estado> listar() {
@@ -39,6 +39,7 @@ public class EstadoService {
     public void remover(Long id) {
         buscarPorId(id);
         estadoRepository.deleteById(id);
+
     }
 
     @Transactional
