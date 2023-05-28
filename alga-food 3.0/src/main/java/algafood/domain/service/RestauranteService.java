@@ -57,8 +57,8 @@ public class RestauranteService {
     }
 
     @Transactional
-    public Restaurante atualizar(Long id, RestauranteDTO restauranteDTO) {
-        var restaurante = buscarPorId(id);
+    public Restaurante atualizar(RestauranteDTO restauranteDTO, Restaurante restaurante) {
+
         var cozinha = cozinhaService.buscar(restauranteDTO.getIdCozinha());
 
         restaurante.setNome(restauranteDTO.getNome());

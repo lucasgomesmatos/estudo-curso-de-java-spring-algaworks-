@@ -45,7 +45,7 @@ public class CidadeController {
         var cidade = cidadeService.buscar(id);
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar(id, cidadeDTO, cidade));
+            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar( cidadeDTO, cidade));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }

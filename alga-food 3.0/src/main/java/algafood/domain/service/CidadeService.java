@@ -54,7 +54,7 @@ public class CidadeService {
     }
 
     @Transactional
-    public Cidade atualizar(Long id, CidadeDTO cidadeDTO, Cidade cidade) {
+    public Cidade atualizar(CidadeDTO cidadeDTO, Cidade cidade) {
 
         var estado = estadoService.buscar(cidadeDTO.getIdEstado());
 

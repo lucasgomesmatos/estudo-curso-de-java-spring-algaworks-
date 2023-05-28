@@ -1,6 +1,8 @@
 package algafood.api.controllers;
 
 import algafood.api.dtos.RestauranteDTO;
+import algafood.domain.exception.EntidadeNaoEncontradaException;
+import algafood.domain.exception.NegocioException;
 import algafood.domain.models.Restaurante;
 import algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,12 +36,23 @@ public class RestauranteController {
 
     @PostMapping
     public ResponseEntity<Restaurante> salvar(@RequestBody RestauranteDTO restauranteDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteDTO));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteDTO));
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("{restauranteId}")
     public ResponseEntity<Restaurante> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody RestauranteDTO restauranteDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(id, restauranteDTO));
+
+        var restaurante = restauranteService.buscar(id);
+
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(restauranteDTO, restaurante));
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @DeleteMapping("{restauranteId}")
@@ -53,7 +66,7 @@ public class RestauranteController {
 
         var restauranteAtual = restauranteService.buscar(id);
 
-        if(restauranteAtual == null) {
+        if (restauranteAtual == null) {
             ResponseEntity.notFound().build();
         }
 
