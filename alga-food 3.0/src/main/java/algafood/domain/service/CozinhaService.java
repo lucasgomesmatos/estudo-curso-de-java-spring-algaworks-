@@ -17,7 +17,7 @@ public class CozinhaService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    private final String MENSAGEM_EXCEPTION_COZINHA = "Cozinha não econtrada para o id: ";
+    private static final String MENSAGEM_EXCEPTION_COZINHA = "Cozinha não econtrada para o id: ";
 
     private Cozinha buscarPorId(Long id) {
         return cozinhaRepository.findById(id)

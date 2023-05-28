@@ -31,14 +31,21 @@ public class CidadeController {
 
     @PostMapping
     public ResponseEntity<Cidade> salvar(@RequestBody CidadeDTO cidadeDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.adicionar(cidadeDTO));
+
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.adicionar(cidadeDTO));
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("{cidadeId}")
     public ResponseEntity<Cidade> atualizar(@PathVariable(value = "cidadeId") Long id, @RequestBody CidadeDTO cidadeDTO) {
 
+        var cidade = cidadeService.buscar(id);
+
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar(id, cidadeDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar(id, cidadeDTO, cidade));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
