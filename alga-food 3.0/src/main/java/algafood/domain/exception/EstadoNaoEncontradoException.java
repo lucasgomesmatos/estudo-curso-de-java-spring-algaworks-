@@ -7,6 +7,6 @@ public class EstadoNaoEncontradoException extends EntidadeNaoEncontradaException
         super( mensagem);
     }
     public EstadoNaoEncontradoException(Long id) {
-        this( String.format("Estado não econtrada para o id:", id));
+        this( String.format("Estado não econtrada para o id: %d", id));
     }
 }

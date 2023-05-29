@@ -1,6 +1,7 @@
 package algafood.api.controllers;
 
 import algafood.api.dtos.CidadeDTO;
+import algafood.api.exceptionhandler.ErrorApi;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.exception.EstadoNaoEncontradoException;
 import algafood.domain.exception.NegocioException;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -55,5 +57,24 @@ public class CidadeController {
     public ResponseEntity<Void> remover(@PathVariable(value = "cidadeId") Long id) {
         cidadeService.remover(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public  ResponseEntity<?> tratarEstadoNaoEncontadoException(EntidadeNaoEncontradaException e) {
+        var erro = ErrorApi.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    }
+    @ExceptionHandler(NegocioException.class)
+    public  ResponseEntity<?> tratarNegocioException(NegocioException e) {
+        var erro = ErrorApi.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 }
