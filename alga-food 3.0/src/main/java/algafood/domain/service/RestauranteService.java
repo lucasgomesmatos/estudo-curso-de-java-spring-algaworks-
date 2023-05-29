@@ -1,11 +1,10 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.RestauranteDTO;
-import algafood.domain.exception.EntidadeNaoEncontradaException;
+import algafood.domain.exception.RestauranteNaoEncontradoException;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,7 @@ public class RestauranteService {
 
     private Restaurante buscarPorId(Long id) {
         return restauranteRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Restaurante não econtrada para o id: " + id));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
     }
 
     public List<Restaurante> listar() {
@@ -48,12 +47,10 @@ public class RestauranteService {
 
     @Transactional
     public void remover(Long id) {
-        try {
-            buscarPorId(id);
-            restauranteRepository.deleteById(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new EntidadeNaoEncontradaException("Restaurante não econtrada para o id: " + id);
-        }
+
+        buscarPorId(id);
+        restauranteRepository.deleteById(id);
+
     }
 
     @Transactional

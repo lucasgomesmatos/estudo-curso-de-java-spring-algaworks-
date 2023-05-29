@@ -44,8 +44,7 @@ public class CidadeController {
     public ResponseEntity<Cidade> atualizar(@PathVariable(value = "cidadeId") Long id, @RequestBody CidadeDTO cidadeDTO) {
 
         try {
-            var cidade = cidadeService.buscar(id);
-            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar(cidadeDTO, cidade));
+            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar(cidadeDTO, id));
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }

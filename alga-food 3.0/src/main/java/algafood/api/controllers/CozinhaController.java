@@ -1,9 +1,12 @@
 package algafood.api.controllers;
 
 import algafood.api.dtos.CozinhaDTO;
+import algafood.domain.common.MensagensDeException;
+import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.service.CozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ public class CozinhaController {
 
     @Autowired
     private CozinhaService cozinhaService;
+
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Cozinha>> listar1() {
@@ -45,7 +49,13 @@ public class CozinhaController {
 
     @DeleteMapping("{cozinhaId}")
     public ResponseEntity<Void> remover(@PathVariable(value = "cozinhaId") Long id) {
-        cozinhaService.remover(id);
-        return ResponseEntity.noContent().build();
+
+
+        try {
+            cozinhaService.remover(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MensagensDeException.MENSAGEM_COZINHA_EM_USO.getMensagem(), id));
+        }
     }
 }

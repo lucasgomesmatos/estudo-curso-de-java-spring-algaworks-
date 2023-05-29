@@ -24,6 +24,7 @@ public class RestauranteController {
     @Autowired
     private RestauranteService restauranteService;
 
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Restaurante>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteService.listar());
@@ -57,8 +58,10 @@ public class RestauranteController {
 
     @DeleteMapping("{restauranteId}")
     public ResponseEntity<Void> remover(@PathVariable(value = "restauranteId") Long id) {
+
         restauranteService.remover(id);
         return ResponseEntity.noContent().build();
+
     }
 
     @PatchMapping("{restauranteId}")

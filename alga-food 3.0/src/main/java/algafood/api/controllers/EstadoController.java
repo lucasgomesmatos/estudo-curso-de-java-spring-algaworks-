@@ -1,6 +1,7 @@
 package algafood.api.controllers;
 
 import algafood.api.dtos.EstadoDTO;
+import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.models.Estado;
 import algafood.domain.service.EstadoService;
@@ -16,7 +17,6 @@ import java.util.List;
 @RequestMapping("api/estados")
 public class EstadoController {
 
-    private static final String MENSAGEM_ESTADO_EM_USO = "Estado de código %d não pode ser removido, pois está em uso";
 
     @Autowired
     private EstadoService estadoService;
@@ -48,7 +48,7 @@ public class EstadoController {
             estadoService.remover(id);
             return ResponseEntity.noContent().build();
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format(MENSAGEM_ESTADO_EM_USO, id));
+            throw new EntidadeEmUsoException(String.format(MensagensDeException.MENSAGEM_ESTADO_EM_USO.getMensagem(), id));
         }
 
     }

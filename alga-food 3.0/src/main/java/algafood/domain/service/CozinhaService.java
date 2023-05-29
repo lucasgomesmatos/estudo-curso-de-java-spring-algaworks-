@@ -1,7 +1,7 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.CozinhaDTO;
-import algafood.domain.exception.EntidadeNaoEncontradaException;
+import algafood.domain.exception.CozinhaNaoEncontradoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
 import org.springframework.beans.BeanUtils;
@@ -17,11 +17,10 @@ public class CozinhaService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    private static final String MENSAGEM_EXCEPTION_COZINHA = "Cozinha não econtrada para o id: ";
 
     private Cozinha buscarPorId(Long id) {
         return cozinhaRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(MENSAGEM_EXCEPTION_COZINHA + id));
+                .orElseThrow(() -> new CozinhaNaoEncontradoException(id));
     }
 
     public List<Cozinha> listar() {
