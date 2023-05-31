@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Builder
-public class ErrorApi {
+public class ApiExceptionError {
 
     private LocalDateTime dataHora;
     private String mensagem;
