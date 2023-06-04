@@ -5,11 +5,16 @@ import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.exception.NegocioException;
 import algafood.domain.models.Restaurante;
 import algafood.domain.service.RestauranteService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +70,7 @@ public class RestauranteController {
     }
 
     @PatchMapping("{restauranteId}")
-    public ResponseEntity<Restaurante> atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos) {
+    public ResponseEntity<Restaurante> atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
 
         var restauranteAtual = restauranteService.buscar(id);
 
@@ -73,39 +78,51 @@ public class RestauranteController {
             ResponseEntity.notFound().build();
         }
 
-        mergeRestaurante(campos, restauranteAtual);
+        mergeRestaurante(campos, restauranteAtual, request);
+        assert restauranteAtual != null;
         var restauranteDto = new RestauranteDTO(restauranteAtual);
         return atualizar(id, restauranteDto);
     }
 
-    private static void mergeRestaurante(Map<String, Object> campos, Restaurante restauranteAtual) {
+    private static void mergeRestaurante(Map<String, Object> campos, Restaurante restauranteAtual, HttpServletRequest request) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        // Transforma os campos em propriedades serializadas do restaurante
-        Restaurante restauranteOrigem = objectMapper.convertValue(campos, Restaurante.class);
+        ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
 
-        campos.forEach((nomePropriedade, valorPropriedade) -> {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-            // Busca cada campo alterado referente a cada propriedade de restaurante
-            Field campo = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+            // Transforma os campos em propriedades serializadas do restaurante
+            Restaurante restauranteOrigem = objectMapper.convertValue(campos, Restaurante.class);
 
-            // acessa as propriedades privadas
-            campo.setAccessible(true);
+            campos.forEach((nomePropriedade, valorPropriedade) -> {
 
-            // Busca as propridades da serialização de restauranteOrigem
-            Object novoValor = ReflectionUtils.getField(campo, restauranteOrigem);
+                // Busca cada campo alterado referente a cada propriedade de restaurante
+                Field campo = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+
+                // acessa as propriedades privadas
+                assert campo != null;
+                campo.setAccessible(true);
+
+                // Busca as propridades da serialização de restauranteOrigem
+                Object novoValor = ReflectionUtils.getField(campo, restauranteOrigem);
 
 
-            /**
-             * Seta os valores alterados nas propridades do restauranteAtual
-             *  (nome == nome) = novoValor
-             */
-            ReflectionUtils.setField(campo, restauranteAtual, novoValor);
+                /**
+                 * Seta os valores alterados nas propridades do restauranteAtual
+                 *  (nome == nome) = novoValor
+                 */
+                ReflectionUtils.setField(campo, restauranteAtual, novoValor);
 
 
-            System.out.println(nomePropriedade + " = " + novoValor);
-            System.out.println(novoValor.getClass());
-        });
+                System.out.println(nomePropriedade + " = " + novoValor);
+                System.out.println(novoValor.getClass());
+            });
+        } catch (IllegalArgumentException exception) {
+            var rootCause = ExceptionUtils.getRootCause(exception);
+            throw new HttpMessageNotReadableException(exception.getMessage(), rootCause, serverHttpRequest);
+        }
     }
 
 }

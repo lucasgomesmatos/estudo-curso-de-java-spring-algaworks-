@@ -3,7 +3,9 @@ package algafood.api.exceptionhandler;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.exception.NegocioException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -24,6 +27,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         var rootCause = ExceptionUtils.getRootCause(ex);
+
+        if (rootCause instanceof PropertyBindingException) {
+            return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
+        }
 
         if (rootCause instanceof InvalidFormatException) {
             return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
@@ -37,15 +44,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 
+    private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        var path = joinPath(ex.getPath());
+        var detail = String.format("A propriedade '%s' não existe. Corrija ou remova essa propriedade e tente novamente.", path);
+        var problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+        var error = createErrorBuild((HttpStatus) status, problemType, detail).build();
+        return handleExceptionInternal(ex, error, headers, status, request);
+    }
+
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        var path = ex.getPath().stream().map(ref -> ref.getFieldName()).collect(Collectors.joining("."));
-
+        var path = joinPath(ex.getPath());
         var detail = String.format("A propriedade '%s' recebeu o valor '%s', " +
                 "que é um tipo inválido. Corrija e informe um valor compatível com o tipo %s.", path, ex.getValue(), ex.getTargetType().getSimpleName());
         var problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
         var error = createErrorBuild((HttpStatus) status, problemType, detail).build();
-
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 
@@ -105,6 +119,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .title(problemType.getTitle())
                 .type(problemType.getPath())
                 .detail(detail);
+    }
+
+    private String joinPath(List<JsonMappingException.Reference> references) {
+        return references.stream()
+                .map(ref -> ref.getFieldName())
+                .collect(Collectors.joining("."));
     }
 
 
