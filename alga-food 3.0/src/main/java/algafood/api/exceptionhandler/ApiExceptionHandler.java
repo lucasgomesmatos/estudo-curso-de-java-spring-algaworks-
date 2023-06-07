@@ -20,11 +20,32 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    public static final String MESSAGE_ERROR_GENERIC_FINAL_USER = "Ocorreu um erro interno inesperado no sistema. "
+            + "Tente novamente e se o problema persistir, entre em contato "
+            + "com o administrador do sistema.";
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
+        var status = HttpStatus.INTERNAL_SERVER_ERROR;
+        var problemType = ProblemType.ERRO_DE_SISTEMA;
+
+        // Importante colocar o printStackTrace (pelo menos por enquanto, que não estamos
+        // fazendo logging) para mostrar a stacktrace no console
+        // Se não fizer isso, você não vai ver a stacktrace de exceptions que seriam importantes
+        // para você durante, especialmente na fase de desenvolvimento
+        ex.printStackTrace();
+
+        var problem = createErrorBuild(status, problemType, MESSAGE_ERROR_GENERIC_FINAL_USER).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -84,7 +105,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         var path = joinPath(ex.getPath());
         var detail = String.format("A propriedade '%s' não existe. Corrija ou remova essa propriedade e tente novamente.", path);
         var problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
-        var error = createErrorBuild((HttpStatus) status, problemType, detail).build();
+
+        var error = createErrorBuild((HttpStatus) status, problemType, detail)
+                .userMessage(MESSAGE_ERROR_GENERIC_FINAL_USER)
+                .build();
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 
@@ -124,7 +148,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         var status = HttpStatus.CONFLICT;
         var detail = ex.getMessage();
         var problemType = ProblemType.ENTIDADE_EM_USO;
-        var error = createErrorBuild(status, problemType, detail).build();
+        var error = createErrorBuild(status, problemType, detail)
+                .userMessage(detail).build();
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
@@ -153,6 +178,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(status.value())
                 .title(problemType.getTitle())
                 .type(problemType.getPath())
+                .timestamp(LocalDateTime.now())
                 .detail(detail);
     }
 
