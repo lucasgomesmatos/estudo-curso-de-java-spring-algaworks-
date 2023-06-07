@@ -1,6 +1,7 @@
 package algafood.api.dtos;
 
 import algafood.domain.models.Restaurante;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class RestauranteDTO {
 
+    @NotNull
     private String nome;
     private BigDecimal taxaFrete;
     private Long idCozinha;

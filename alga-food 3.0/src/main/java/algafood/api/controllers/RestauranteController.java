@@ -8,6 +8,7 @@ import algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public class RestauranteController {
     }
 
     @PostMapping
-    public ResponseEntity<Restaurante> salvar(@RequestBody RestauranteDTO restauranteDTO) {
+    public ResponseEntity<Restaurante> salvar(@RequestBody @Valid RestauranteDTO restauranteDTO) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteDTO));
         } catch (EntidadeNaoEncontradaException e) {
