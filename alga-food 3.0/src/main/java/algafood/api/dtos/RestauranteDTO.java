@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RestauranteDTO {
+
     private String nome;
     private BigDecimal taxaFrete;
     private Long idCozinha;
