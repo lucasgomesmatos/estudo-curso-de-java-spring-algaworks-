@@ -15,7 +15,11 @@ public class RestauranteDTO {
 
     @NotNull
     private String nome;
+
+    @NotNull
     private BigDecimal taxaFrete;
+
+    @NotNull
     private Long idCozinha;
 
     public RestauranteDTO(Restaurante restaurante) {

@@ -52,7 +52,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         var detail = String.format("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
         var problemType = ProblemType.DADOS_INVALIDOS;
-        var error = createErrorBuild((HttpStatus) status, problemType, detail).userMessage(detail).build();
+
+        var bindingResult = ex.getBindingResult();
+
+        var fields = bindingResult.getFieldErrors().stream().map(
+                fieldError ->
+                        ApiExceptionError.Field.builder()
+                                .name(fieldError.getField())
+                                .userMessage(fieldError.getDefaultMessage())
+                                .build()
+
+        ).toList();
+
+        var error = createErrorBuild((HttpStatus) status, problemType, detail)
+                .fields(fields)
+                .build();
 
         return handleExceptionInternal(ex, error, headers, status, request);
     }
