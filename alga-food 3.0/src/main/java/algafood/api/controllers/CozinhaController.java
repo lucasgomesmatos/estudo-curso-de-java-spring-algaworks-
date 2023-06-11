@@ -5,6 +5,7 @@ import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.service.CozinhaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<Cozinha> salvar(@RequestBody CozinhaDTO cozinhaDTO) {
+    public ResponseEntity<Cozinha> salvar(@RequestBody @Valid CozinhaDTO cozinhaDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaService.adicionar(cozinhaDTO));
     }
 
