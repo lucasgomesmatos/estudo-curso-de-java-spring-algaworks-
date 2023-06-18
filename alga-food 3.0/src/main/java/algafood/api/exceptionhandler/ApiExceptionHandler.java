@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -31,6 +34,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String MESSAGE_ERROR_GENERIC_FINAL_USER = "Ocorreu um erro interno inesperado no sistema. "
             + "Tente novamente e se o problema persistir, entre em contato "
             + "com o administrador do sistema.";
+
+    @Autowired
+    private MessageSource messageSource;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
@@ -57,10 +63,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var fields = bindingResult.getFieldErrors().stream().map(
                 fieldError ->
-                        ApiExceptionError.Field.builder()
-                                .name(fieldError.getField())
-                                .userMessage(fieldError.getDefaultMessage())
-                                .build()
+                {
+                    var message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+
+                    return ApiExceptionError.Field.builder()
+                            .name(fieldError.getField())
+                            .userMessage(message)
+                            .build();
+                }
 
         ).toList();
 
