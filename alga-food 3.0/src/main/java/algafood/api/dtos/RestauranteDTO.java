@@ -21,7 +21,8 @@ public class RestauranteDTO {
     private String nome;
 
 //    @DecimalMin("0")
-    @PositiveOrZero
+    @NotNull
+    @PositiveOrZero(message = "{TaxaFrete.invalida}")
     private BigDecimal taxaFrete;
 
     @NotNull
