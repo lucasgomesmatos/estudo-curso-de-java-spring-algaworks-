@@ -1,5 +1,6 @@
 package algafood.api.dtos;
 
+import algafood.core.TaxaFrete;
 import algafood.domain.models.Restaurante;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,8 @@ public class RestauranteDTO {
 
 //    @DecimalMin("0")
     @NotNull
-//    @PositiveOrZero(message = "{TaxaFrete.invalida}")
+    // @PositiveOrZero //(message = "{TaxaFrete.invalida}")
+    @TaxaFrete
     private BigDecimal taxaFrete;
 
     @NotNull
