@@ -1,9 +1,10 @@
 package algafood.api.dtos;
 
-import algafood.core.TaxaFrete;
+import algafood.core.Multiplo;
 import algafood.domain.models.Restaurante;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,9 @@ public class RestauranteDTO {
 
 //    @DecimalMin("0")
     @NotNull
-    // @PositiveOrZero //(message = "{TaxaFrete.invalida}")
-    @TaxaFrete
+     @PositiveOrZero //(message = "{TaxaFrete.invalida}")
+//    @TaxaFrete
+    @Multiplo(numero = 5)
     private BigDecimal taxaFrete;
 
     @NotNull
