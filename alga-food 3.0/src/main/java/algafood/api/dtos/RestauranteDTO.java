@@ -1,5 +1,6 @@
 package algafood.api.dtos;
 
+import algafood.core.ValorZeroIncluiDescricao;
 import algafood.domain.models.Restaurante;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
