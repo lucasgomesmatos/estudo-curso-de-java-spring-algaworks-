@@ -1,6 +1,7 @@
 package algafood.api.controllers;
 
 import algafood.api.dtos.RestauranteDTO;
+import algafood.core.ValidacaoException;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.exception.NegocioException;
 import algafood.domain.models.Restaurante;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -30,6 +33,8 @@ public class RestauranteController {
     @Autowired
     private RestauranteService restauranteService;
 
+    @Autowired
+    private SmartValidator validator;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Restaurante>> listar() {
@@ -80,9 +85,20 @@ public class RestauranteController {
         }
 
         mergeRestaurante(campos, restauranteAtual, request);
+        validateRestaurante(restauranteAtual, "restaurante");
+        
         assert restauranteAtual != null;
         var restauranteDto = new RestauranteDTO(restauranteAtual);
         return atualizar(id, restauranteDto);
+    }
+
+    private void validateRestaurante(Restaurante restaurante, String objectName) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+        validator.validate(restaurante, bindingResult);
+
+        if(bindingResult.hasErrors()) {
+            throw new ValidacaoException(bindingResult);
+        }
     }
 
     private static void mergeRestaurante(Map<String, Object> campos, Restaurante restauranteAtual, HttpServletRequest request) {
