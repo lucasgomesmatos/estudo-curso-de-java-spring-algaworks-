@@ -36,6 +36,11 @@ public class Cozinha {
         this.id = id;
     }
 
+    public Cozinha(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
