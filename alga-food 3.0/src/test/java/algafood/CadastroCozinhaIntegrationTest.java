@@ -1,6 +1,7 @@
 package algafood;
 
 import algafood.api.dtos.CozinhaDTO;
+import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
 import algafood.domain.service.CozinhaService;
@@ -53,5 +54,17 @@ public class CadastroCozinhaIntegrationTest {
 
 		// Validação
 
+	}
+
+	@Test(expected = DataIntegrityViolationException.class)
+	public void devefalharQuandoExcluirCozinhaEmUso() {
+
+		cozinhaService.remover(1L);
+	}
+
+	@Test(expected = EntidadeNaoEncontradaException.class)
+	public void devefalharQuandoExcluirCozinhaInexistente() {
+
+		cozinhaService.remover(10L);
 	}
 }
