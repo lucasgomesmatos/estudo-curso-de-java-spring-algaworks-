@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CadastroCozinhaIntegrationTest {
+public class CadastroCozinhaIT {
 
 
 	@Autowired
@@ -51,8 +51,6 @@ public class CadastroCozinhaIntegrationTest {
 
 		// Ação
 		Cozinha novaCozinhaCadastrada = cozinhaService.adicionar(novaCozinha);
-
-		// Validação
 
 	}
 
