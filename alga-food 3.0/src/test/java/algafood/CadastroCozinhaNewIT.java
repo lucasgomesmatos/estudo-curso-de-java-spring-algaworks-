@@ -1,6 +1,7 @@
 package algafood;
 
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 
 
@@ -20,6 +22,8 @@ public class CadastroCozinhaNewIT {
 
     @Test
     public void deveRetornarStatus200QuandoConsultarCozinhas() {
+        enableLoggingOfRequestAndResponseIfValidationFails();
+
         given()
                 .basePath("api/cozinhas")
                 .port(port)
@@ -28,6 +32,22 @@ public class CadastroCozinhaNewIT {
                 .get()
                 .then()
                 .statusCode(HttpStatus.OK.value())
+        ;
+    }
+
+    @Test
+    public void deveRetornar4CozinhasQuandoConsultarCozinhas() {
+        enableLoggingOfRequestAndResponseIfValidationFails();
+
+        given()
+                .basePath("api/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get()
+                .then()
+                .body("", Matchers.hasSize(4))
+                .body("nome", Matchers.hasItems("Indiana", "Brasil"))
         ;
     }
 }
