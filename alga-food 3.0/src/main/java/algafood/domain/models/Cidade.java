@@ -25,7 +25,6 @@ public class Cidade {
     private Estado estado;
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,13 +1,11 @@
 package algafood;
 
-import algafood.common.Serializer;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
 import algafood.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
-import org.jboss.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,8 +35,6 @@ public class CadastroCozinhaNewIT {
 
     @Autowired
     CozinhaRepository cozinhaRepository;
-
-    static Logger logger = Logger.getLogger(Serializer.class);
 
     private Cozinha cozinhaIndiana;
     private int quantidadeCozinhasCadastradas;
