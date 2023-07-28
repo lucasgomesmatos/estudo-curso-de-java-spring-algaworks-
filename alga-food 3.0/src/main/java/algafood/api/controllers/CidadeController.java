@@ -1,6 +1,6 @@
 package algafood.api.controllers;
 
-import algafood.api.dtos.CidadeDTO;
+import algafood.api.dtos.input.CidadeInputDTO;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.exception.EstadoNaoEncontradoException;
 import algafood.domain.exception.NegocioException;
@@ -31,20 +31,20 @@ public class CidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<Cidade> salvar(@RequestBody CidadeDTO cidadeDTO) {
+    public ResponseEntity<Cidade> salvar(@RequestBody CidadeInputDTO cidadeInputDTO) {
 
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.adicionar(cidadeDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.adicionar(cidadeInputDTO));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
 
     @PutMapping("{cidadeId}")
-    public ResponseEntity<Cidade> atualizar(@PathVariable(value = "cidadeId") Long id, @RequestBody CidadeDTO cidadeDTO) {
+    public ResponseEntity<Cidade> atualizar(@PathVariable(value = "cidadeId") Long id, @RequestBody CidadeInputDTO cidadeInputDTO) {
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar(cidadeDTO, id));
+            return ResponseEntity.status(HttpStatus.OK).body(cidadeService.atualizar(cidadeInputDTO, id));
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }

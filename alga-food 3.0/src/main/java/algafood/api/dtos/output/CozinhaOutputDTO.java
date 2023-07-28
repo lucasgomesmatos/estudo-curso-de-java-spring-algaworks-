@@ -1,6 +1,5 @@
-package algafood.api.dtos;
+package algafood.api.dtos.output;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -10,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class CozinhaDTO {
+public class CozinhaOutputDTO {
 
-    @NotBlank
+    private Long id;
+
     private String nome;
 }

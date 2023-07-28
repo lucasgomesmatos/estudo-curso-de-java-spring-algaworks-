@@ -1,6 +1,6 @@
 package algafood.domain.service;
 
-import algafood.api.dtos.RestauranteDTO;
+import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.domain.exception.RestauranteNaoEncontradoException;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.RestauranteRepository;
@@ -29,12 +29,12 @@ public class RestauranteService {
     }
 
     @Transactional
-    public Restaurante adicionar(RestauranteDTO restauranteDTO) {
-        var cozinha = cozinhaService.buscar(restauranteDTO.getIdCozinha());
+    public Restaurante adicionar(RestauranteOutputDTO restauranteOutputDTO) {
+        var cozinha = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
 
         var restaurante = Restaurante.builder()
-                .nome(restauranteDTO.getNome())
-                .taxaFrete(restauranteDTO.getTaxaFrete())
+                .nome(restauranteOutputDTO.getNome())
+                .taxaFrete(restauranteOutputDTO.getTaxaFrete())
                 .cozinha(cozinha)
                 .build();
 
@@ -54,12 +54,12 @@ public class RestauranteService {
     }
 
     @Transactional
-    public Restaurante atualizar(RestauranteDTO restauranteDTO, Restaurante restaurante) {
+    public Restaurante atualizar(RestauranteOutputDTO restauranteOutputDTO, Restaurante restaurante) {
 
-        var cozinha = cozinhaService.buscar(restauranteDTO.getIdCozinha());
+        var cozinha = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
 
-        restaurante.setNome(restauranteDTO.getNome());
-        restaurante.setTaxaFrete(restauranteDTO.getTaxaFrete());
+        restaurante.setNome(restauranteOutputDTO.getNome());
+        restaurante.setTaxaFrete(restauranteOutputDTO.getTaxaFrete());
         restaurante.setCozinha(cozinha);
         return restauranteRepository.save(restaurante);
     }

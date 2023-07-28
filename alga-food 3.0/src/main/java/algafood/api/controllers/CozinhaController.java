@@ -1,6 +1,6 @@
 package algafood.api.controllers;
 
-import algafood.api.dtos.CozinhaDTO;
+import algafood.api.dtos.input.CozinhaInputDTO;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.models.Cozinha;
@@ -39,13 +39,13 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<Cozinha> salvar(@RequestBody @Valid CozinhaDTO cozinhaDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaService.adicionar(cozinhaDTO));
+    public ResponseEntity<Cozinha> salvar(@RequestBody @Valid CozinhaInputDTO cozinha) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaService.adicionar(cozinha));
     }
 
     @PutMapping("{cozinhaId}")
-    public ResponseEntity<Cozinha> atualizar(@PathVariable(value = "cozinhaId") Long id, @RequestBody CozinhaDTO cozinhaDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.atualizar(id, cozinhaDTO));
+    public ResponseEntity<Cozinha> atualizar(@PathVariable(value = "cozinhaId") Long id, @RequestBody CozinhaInputDTO cozinhaInputDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.atualizar(id, cozinhaInputDTO));
     }
 
     @DeleteMapping("{cozinhaId}")

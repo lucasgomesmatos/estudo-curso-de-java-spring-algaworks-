@@ -1,6 +1,6 @@
 package algafood.api.controllers;
 
-import algafood.api.dtos.EstadoDTO;
+import algafood.api.dtos.input.EstadoInputDTO;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.models.Estado;
@@ -32,13 +32,13 @@ public class EstadoController {
     }
 
     @PostMapping
-    public ResponseEntity<Estado> salvar(@RequestBody EstadoDTO estadoDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(estadoService.adicionar(estadoDTO));
+    public ResponseEntity<Estado> salvar(@RequestBody EstadoInputDTO estadoInputDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoService.adicionar(estadoInputDTO));
     }
 
     @PutMapping("{estadoId}")
-    public ResponseEntity<Estado> atualizar(@PathVariable(value = "estadoId") Long id, @RequestBody EstadoDTO estadoDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(estadoService.atualizar(id, estadoDTO));
+    public ResponseEntity<Estado> atualizar(@PathVariable(value = "estadoId") Long id, @RequestBody EstadoInputDTO estadoInputDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(estadoService.atualizar(id, estadoInputDTO));
     }
 
     @DeleteMapping("{estadoId}")

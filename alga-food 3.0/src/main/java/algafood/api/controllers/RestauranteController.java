@@ -1,6 +1,6 @@
 package algafood.api.controllers;
 
-import algafood.api.dtos.RestauranteDTO;
+import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.core.ValidacaoException;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.exception.NegocioException;
@@ -47,21 +47,21 @@ public class RestauranteController {
     }
 
     @PostMapping
-    public ResponseEntity<Restaurante> salvar(@RequestBody @Valid RestauranteDTO restauranteDTO) {
+    public ResponseEntity<Restaurante> salvar(@RequestBody @Valid RestauranteOutputDTO restauranteOutputDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteOutputDTO));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
 
     @PutMapping("{restauranteId}")
-    public ResponseEntity<Restaurante> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody RestauranteDTO restauranteDTO) {
+    public ResponseEntity<Restaurante> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody RestauranteOutputDTO restauranteOutputDTO) {
 
         var restaurante = restauranteService.buscar(id);
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(restauranteDTO, restaurante));
+            return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(restauranteOutputDTO, restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -88,7 +88,7 @@ public class RestauranteController {
         validateRestaurante(restauranteAtual, "restaurante");
         
         assert restauranteAtual != null;
-        var restauranteDto = new RestauranteDTO(restauranteAtual);
+        var restauranteDto = new RestauranteOutputDTO(restauranteAtual);
         return atualizar(id, restauranteDto);
     }
 

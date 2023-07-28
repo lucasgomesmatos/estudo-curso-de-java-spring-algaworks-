@@ -1,4 +1,4 @@
-package algafood.api.dtos;
+package algafood.api.dtos.output;
 
 import algafood.domain.models.Restaurante;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestauranteDTO {
+public class RestauranteOutputDTO {
 
 
     @NotBlank
@@ -28,7 +28,7 @@ public class RestauranteDTO {
     @NotNull
     private Long idCozinha;
 
-    public RestauranteDTO(Restaurante restaurante) {
+    public RestauranteOutputDTO(Restaurante restaurante) {
         this.nome = restaurante.getNome();
         this.taxaFrete = restaurante.getTaxaFrete();
         this.idCozinha = restaurante.getCozinha().getId();

@@ -1,6 +1,6 @@
 package algafood;
 
-import algafood.api.dtos.CozinhaDTO;
+import algafood.api.dtos.input.CozinhaInputDTO;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
@@ -29,7 +29,7 @@ public class CadastroCozinhaIT {
 	@Test
 	public void deveTestarCadastroCozinhaComSucesso() {
 		// Cenário
-		CozinhaDTO novaCozinha = new CozinhaDTO("Brasileira");
+		CozinhaInputDTO novaCozinha = new CozinhaInputDTO("Brasileira");
 
 		// Ação
 		Cozinha novaCozinhaCadastrada = cozinhaService.adicionar(novaCozinha);
@@ -47,7 +47,7 @@ public class CadastroCozinhaIT {
 	@Test(expected = DataIntegrityViolationException.class)
 	public void deveFalharAoCadastrarCozinhaQuandoSemNome() {
 		// Cenário
-		CozinhaDTO novaCozinha = new CozinhaDTO(null);
+		CozinhaInputDTO novaCozinha = new CozinhaInputDTO(null);
 
 		// Ação
 		Cozinha novaCozinhaCadastrada = cozinhaService.adicionar(novaCozinha);

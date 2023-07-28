@@ -1,6 +1,6 @@
 package algafood.domain.service;
 
-import algafood.api.dtos.CozinhaDTO;
+import algafood.api.dtos.input.CozinhaInputDTO;
 import algafood.domain.exception.CozinhaNaoEncontradoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
@@ -28,8 +28,8 @@ public class CozinhaService {
     }
 
     @Transactional
-    public Cozinha adicionar(CozinhaDTO cozinhaDto) {
-        var cozinha = new Cozinha(cozinhaDto.getNome());
+    public Cozinha adicionar(CozinhaInputDTO cozinhaInputDto) {
+        var cozinha = new Cozinha(cozinhaInputDto.getNome());
 
         return cozinhaRepository.save(cozinha);
     }
@@ -46,9 +46,9 @@ public class CozinhaService {
     }
 
     @Transactional
-    public Cozinha atualizar(Long id, CozinhaDTO cozinhaDTO) {
+    public Cozinha atualizar(Long id, CozinhaInputDTO cozinhaInputDTO) {
         var cozinha = buscarPorId(id);
-        BeanUtils.copyProperties(cozinhaDTO, cozinha, "id");
+        BeanUtils.copyProperties(cozinhaInputDTO, cozinha, "id");
         return cozinhaRepository.save(cozinha);
     }
 }

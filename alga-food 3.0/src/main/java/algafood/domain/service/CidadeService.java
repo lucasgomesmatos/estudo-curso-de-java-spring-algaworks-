@@ -1,6 +1,6 @@
 package algafood.domain.service;
 
-import algafood.api.dtos.CidadeDTO;
+import algafood.api.dtos.input.CidadeInputDTO;
 import algafood.domain.exception.CidadeNaoEncontradoException;
 import algafood.domain.models.Cidade;
 import algafood.domain.repositories.CidadeRepository;
@@ -29,12 +29,12 @@ public class CidadeService {
     }
 
     @Transactional
-    public Cidade adicionar(CidadeDTO cidadeDTO) {
-        var estado = estadoService.buscar(cidadeDTO.getIdEstado());
+    public Cidade adicionar(CidadeInputDTO cidadeInputDTO) {
+        var estado = estadoService.buscar(cidadeInputDTO.getIdEstado());
 
 
         var cidade = Cidade.builder()
-                .nome(cidadeDTO.getNome())
+                .nome(cidadeInputDTO.getNome())
                 .estado(estado)
                 .build();
 
@@ -54,11 +54,11 @@ public class CidadeService {
     }
 
     @Transactional
-    public Cidade atualizar(CidadeDTO cidadeDTO, Long id) {
+    public Cidade atualizar(CidadeInputDTO cidadeInputDTO, Long id) {
         var cidade = buscar(id);
-        var estado = estadoService.buscar(cidadeDTO.getIdEstado());
+        var estado = estadoService.buscar(cidadeInputDTO.getIdEstado());
 
-        cidade.setNome(cidadeDTO.getNome());
+        cidade.setNome(cidadeInputDTO.getNome());
         cidade.setEstado(estado);
 
         return cidadeRepository.save(cidade);
