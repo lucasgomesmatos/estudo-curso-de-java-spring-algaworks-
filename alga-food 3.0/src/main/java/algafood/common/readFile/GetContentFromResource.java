@@ -1,4 +1,4 @@
-package algafood.common;
+package algafood.common.readFile;
 
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StreamUtils;

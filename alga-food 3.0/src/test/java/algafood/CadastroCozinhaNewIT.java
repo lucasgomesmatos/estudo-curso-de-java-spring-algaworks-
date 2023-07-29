@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static algafood.common.GetContentFromResource.getContentFromResource;
+import static algafood.common.readFile.GetContentFromResource.getContentFromResource;
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;

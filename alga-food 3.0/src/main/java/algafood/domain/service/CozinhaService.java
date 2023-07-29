@@ -1,6 +1,8 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.input.CozinhaInputDTO;
+import algafood.api.dtos.output.CozinhaOutputDTO;
+import algafood.common.mapper.Mapper;
 import algafood.domain.exception.CozinhaNaoEncontradoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
@@ -18,6 +20,9 @@ public class CozinhaService {
     private CozinhaRepository cozinhaRepository;
 
 
+    @Autowired
+    Mapper mapper;
+
     private Cozinha buscarPorId(Long id) {
         return cozinhaRepository.findById(id)
                 .orElseThrow(() -> new CozinhaNaoEncontradoException(id));
@@ -28,10 +33,10 @@ public class CozinhaService {
     }
 
     @Transactional
-    public Cozinha adicionar(CozinhaInputDTO cozinhaInputDto) {
+    public CozinhaOutputDTO adicionar(CozinhaInputDTO cozinhaInputDto) {
         var cozinha = new Cozinha(cozinhaInputDto.getNome());
 
-        return cozinhaRepository.save(cozinha);
+        return Mapper.generalMapper(cozinhaRepository.save(cozinha), CozinhaOutputDTO.class);
     }
 
     public Cozinha buscar(Long id) {

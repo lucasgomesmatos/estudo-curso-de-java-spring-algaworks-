@@ -1,4 +1,4 @@
-package algafood.common;
+package algafood.common.serializer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
