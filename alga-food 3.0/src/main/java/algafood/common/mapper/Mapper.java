@@ -9,18 +9,14 @@ import java.util.stream.Collectors;
 @Component
 public class Mapper {
 
-    private static final ModelMapper modelMapper;
+    private static final ModelMapper modelMapper = new ModelMapper();
 
-    static {
-        modelMapper = new ModelMapper();
+    public <T, S> S generalMapper(T input, Class<S> output) {
+        return modelMapper.map(input, output);
     }
 
-    public static <T, S> S generalMapper(T entity, Class<S> convertClass) {
-        return modelMapper.map(entity, convertClass);
-    }
-
-    public <T, S> List<S> mapCollection(List<T> listEntity, Class<S> convertClass) {
-        return listEntity.stream().map(entity -> generalMapper(entity, convertClass))
+    public <T, S> List<S> mapCollection(List<T> input, Class<S> output) {
+        return input.stream().map(entity -> generalMapper(entity, output))
                 .collect(Collectors.toList());
     }
 

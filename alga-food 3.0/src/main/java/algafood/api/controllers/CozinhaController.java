@@ -1,9 +1,9 @@
 package algafood.api.controllers;
 
 import algafood.api.dtos.input.CozinhaInputDTO;
+import algafood.api.dtos.output.CozinhaOutputDTO;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
-import algafood.domain.models.Cozinha;
 import algafood.domain.service.CozinhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +24,27 @@ public class CozinhaController {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Cozinha>> listar1() {
+    public ResponseEntity<List<CozinhaOutputDTO>> listar1() {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
     }
 
     @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<List<Cozinha>> listar2() {
+    public ResponseEntity<List<CozinhaOutputDTO>> listar2() {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.listar());
     }
 
     @GetMapping("{cozinhaId}")
-    public ResponseEntity<Cozinha> buscar(@PathVariable(value = "cozinhaId") Long id) {
+    public ResponseEntity<CozinhaOutputDTO> buscar(@PathVariable(value = "cozinhaId") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.buscar(id));
     }
 
     @PostMapping
-    public ResponseEntity<Cozinha> salvar(@RequestBody @Valid CozinhaInputDTO cozinha) {
+    public ResponseEntity<CozinhaOutputDTO> salvar(@RequestBody @Valid CozinhaInputDTO cozinha) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaService.adicionar(cozinha));
     }
 
     @PutMapping("{cozinhaId}")
-    public ResponseEntity<Cozinha> atualizar(@PathVariable(value = "cozinhaId") Long id, @RequestBody CozinhaInputDTO cozinhaInputDTO) {
+    public ResponseEntity<CozinhaOutputDTO> atualizar(@PathVariable(value = "cozinhaId") Long id, @RequestBody CozinhaInputDTO cozinhaInputDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(cozinhaService.atualizar(id, cozinhaInputDTO));
     }
 

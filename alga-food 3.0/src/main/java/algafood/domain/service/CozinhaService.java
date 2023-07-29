@@ -28,19 +28,18 @@ public class CozinhaService {
                 .orElseThrow(() -> new CozinhaNaoEncontradoException(id));
     }
 
-    public List<Cozinha> listar() {
-        return cozinhaRepository.findAll();
+    public List<CozinhaOutputDTO> listar() {
+        return mapper.mapCollection(cozinhaRepository.findAll(), CozinhaOutputDTO.class);
     }
 
     @Transactional
     public CozinhaOutputDTO adicionar(CozinhaInputDTO cozinhaInputDto) {
         var cozinha = new Cozinha(cozinhaInputDto.getNome());
-
-        return Mapper.generalMapper(cozinhaRepository.save(cozinha), CozinhaOutputDTO.class);
+        return mapper.generalMapper(cozinhaRepository.save(cozinha), CozinhaOutputDTO.class);
     }
 
-    public Cozinha buscar(Long id) {
-        return buscarPorId(id);
+    public CozinhaOutputDTO buscar(Long id) {
+        return mapper.generalMapper(buscarPorId(id), CozinhaOutputDTO.class);
     }
 
     @Transactional
@@ -51,9 +50,9 @@ public class CozinhaService {
     }
 
     @Transactional
-    public Cozinha atualizar(Long id, CozinhaInputDTO cozinhaInputDTO) {
+    public CozinhaOutputDTO atualizar(Long id, CozinhaInputDTO cozinhaInputDTO) {
         var cozinha = buscarPorId(id);
         BeanUtils.copyProperties(cozinhaInputDTO, cozinha, "id");
-        return cozinhaRepository.save(cozinha);
+        return mapper.generalMapper(cozinhaRepository.save(cozinha), CozinhaOutputDTO.class);
     }
 }

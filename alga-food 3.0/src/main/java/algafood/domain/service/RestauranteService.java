@@ -1,7 +1,9 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.output.RestauranteOutputDTO;
+import algafood.common.mapper.Mapper;
 import algafood.domain.exception.RestauranteNaoEncontradoException;
+import algafood.domain.models.Cozinha;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class RestauranteService {
     @Autowired
     private CozinhaService cozinhaService;
 
+    @Autowired
+    Mapper mapper;
+
     private Restaurante buscarPorId(Long id) {
         return restauranteRepository.findById(id)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
@@ -30,7 +35,9 @@ public class RestauranteService {
 
     @Transactional
     public Restaurante adicionar(RestauranteOutputDTO restauranteOutputDTO) {
-        var cozinha = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
+        var cozinhaOutput = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
+
+        var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
 
         var restaurante = Restaurante.builder()
                 .nome(restauranteOutputDTO.getNome())
@@ -56,7 +63,8 @@ public class RestauranteService {
     @Transactional
     public Restaurante atualizar(RestauranteOutputDTO restauranteOutputDTO, Restaurante restaurante) {
 
-        var cozinha = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
+        var cozinhaOutput = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
+        var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
 
         restaurante.setNome(restauranteOutputDTO.getNome());
         restaurante.setTaxaFrete(restauranteOutputDTO.getTaxaFrete());
