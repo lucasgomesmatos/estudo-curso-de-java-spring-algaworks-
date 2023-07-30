@@ -1,5 +1,6 @@
 package algafood.api.controllers;
 
+import algafood.api.dtos.input.RestauranteInputDTO;
 import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.core.ValidacaoException;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -37,31 +38,31 @@ public class RestauranteController {
     private SmartValidator validator;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Restaurante>> listar() {
+    public ResponseEntity<List<RestauranteOutputDTO>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteService.listar());
     }
 
     @GetMapping("{restauranteId}")
-    public ResponseEntity<Restaurante> buscar(@PathVariable(value = "restauranteId") Long id) {
+    public ResponseEntity<RestauranteOutputDTO> buscar(@PathVariable(value = "restauranteId") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(restauranteService.buscar(id));
     }
 
     @PostMapping
-    public ResponseEntity<Restaurante> salvar(@RequestBody @Valid RestauranteOutputDTO restauranteOutputDTO) {
+    public ResponseEntity<RestauranteOutputDTO> salvar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteOutputDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteInputDTO));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
 
     @PutMapping("{restauranteId}")
-    public ResponseEntity<Restaurante> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody RestauranteOutputDTO restauranteOutputDTO) {
+    public ResponseEntity<RestauranteOutputDTO> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody RestauranteInputDTO restauranteInputDTO) {
 
-        var restaurante = restauranteService.buscar(id);
+        var restaurante = restauranteService.buscarRestaurante(id);
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(restauranteOutputDTO, restaurante));
+            return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(restauranteInputDTO, restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -76,9 +77,9 @@ public class RestauranteController {
     }
 
     @PatchMapping("{restauranteId}")
-    public ResponseEntity<Restaurante> atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
+    public ResponseEntity<RestauranteOutputDTO> atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
 
-        var restauranteAtual = restauranteService.buscar(id);
+        var restauranteAtual = restauranteService.buscarRestaurante(id);
 
         if (restauranteAtual == null) {
             ResponseEntity.notFound().build();
@@ -88,7 +89,7 @@ public class RestauranteController {
         validateRestaurante(restauranteAtual, "restaurante");
         
         assert restauranteAtual != null;
-        var restauranteDto = new RestauranteOutputDTO(restauranteAtual);
+        var restauranteDto = new RestauranteInputDTO(restauranteAtual);
         return atualizar(id, restauranteDto);
     }
 

@@ -1,5 +1,6 @@
 package algafood.common.mapper;
 
+import org.modelmapper.ExpressionMap;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,10 @@ public class Mapper {
     public <T, S> List<S> mapCollection(List<T> input, Class<S> output) {
         return input.stream().map(entity -> generalMapper(entity, output))
                 .collect(Collectors.toList());
+    }
+
+    public <S, T> void addMapping(Class<S> input, Class<T> output, ExpressionMap<S, T> expressionMap) {
+        modelMapper.typeMap(input, output).addMappings(expressionMap);
     }
 
 }

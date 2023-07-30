@@ -1,5 +1,6 @@
 package algafood.domain.service;
 
+import algafood.api.dtos.input.RestauranteInputDTO;
 import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.common.mapper.Mapper;
 import algafood.domain.exception.RestauranteNaoEncontradoException;
@@ -29,26 +30,30 @@ public class RestauranteService {
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
     }
 
-    public List<Restaurante> listar() {
-        return restauranteRepository.findAll();
+    public List<RestauranteOutputDTO> listar() {
+        return mapper.mapCollection(restauranteRepository.findAll(), RestauranteOutputDTO.class);
     }
 
     @Transactional
-    public Restaurante adicionar(RestauranteOutputDTO restauranteOutputDTO) {
-        var cozinhaOutput = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
+    public RestauranteOutputDTO adicionar(RestauranteInputDTO restauranteInputDTO) {
+        var cozinhaOutput = cozinhaService.buscar(restauranteInputDTO.getIdCozinha());
 
         var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
 
         var restaurante = Restaurante.builder()
-                .nome(restauranteOutputDTO.getNome())
-                .taxaFrete(restauranteOutputDTO.getTaxaFrete())
+                .nome(restauranteInputDTO.getNome())
+                .taxaFrete(restauranteInputDTO.getPrecoFrete())
                 .cozinha(cozinha)
                 .build();
 
-        return restauranteRepository.save(restaurante);
+        return mapper.generalMapper(restauranteRepository.save(restaurante), RestauranteOutputDTO.class);
     }
 
-    public Restaurante buscar(Long id) {
+    public RestauranteOutputDTO buscar(Long id) {
+        return mapper.generalMapper(buscarPorId(id), RestauranteOutputDTO.class);
+    }
+
+    public Restaurante buscarRestaurante(Long id) {
         return buscarPorId(id);
     }
 
@@ -61,14 +66,14 @@ public class RestauranteService {
     }
 
     @Transactional
-    public Restaurante atualizar(RestauranteOutputDTO restauranteOutputDTO, Restaurante restaurante) {
+    public RestauranteOutputDTO atualizar(RestauranteInputDTO restauranteInputDTO, Restaurante restaurante) {
 
-        var cozinhaOutput = cozinhaService.buscar(restauranteOutputDTO.getIdCozinha());
+        var cozinhaOutput = cozinhaService.buscar(restauranteInputDTO.getIdCozinha());
         var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
 
-        restaurante.setNome(restauranteOutputDTO.getNome());
-        restaurante.setTaxaFrete(restauranteOutputDTO.getTaxaFrete());
+        restaurante.setNome(restauranteInputDTO.getNome());
+        restaurante.setTaxaFrete(restauranteInputDTO.getPrecoFrete());
         restaurante.setCozinha(cozinha);
-        return restauranteRepository.save(restaurante);
+        return mapper.generalMapper(restauranteRepository.save(restaurante), RestauranteOutputDTO.class);
     }
 }
