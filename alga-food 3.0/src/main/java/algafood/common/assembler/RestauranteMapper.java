@@ -15,8 +15,7 @@ public class RestauranteMapper {
 
     @PostConstruct
     public void adicionarMapeamentosCustomizados() {
-
-
+        
         mapper.addMapping(Restaurante.class, RestauranteOutputDTO.class, expressionMap -> {
             expressionMap.map(Restaurante::getTaxaFrete, RestauranteOutputDTO::setTaxaFrete);
         });
