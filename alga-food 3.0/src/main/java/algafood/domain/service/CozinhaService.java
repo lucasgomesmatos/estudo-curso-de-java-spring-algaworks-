@@ -3,11 +3,14 @@ package algafood.domain.service;
 import algafood.api.dtos.input.CozinhaInputDTO;
 import algafood.api.dtos.output.CozinhaOutputDTO;
 import algafood.common.mapper.Mapper;
+import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.CozinhaNaoEncontradoException;
+import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.repositories.CozinhaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,9 +47,13 @@ public class CozinhaService {
 
     @Transactional
     public void remover(Long id) {
-        buscarPorId(id);
-        cozinhaRepository.deleteById(id);
-
+        try {
+            buscarPorId(id);
+            cozinhaRepository.deleteById(id);
+            cozinhaRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MensagensDeException.MENSAGEM_COZINHA_EM_USO.getMensagem(), id));
+        }
     }
 
     @Transactional

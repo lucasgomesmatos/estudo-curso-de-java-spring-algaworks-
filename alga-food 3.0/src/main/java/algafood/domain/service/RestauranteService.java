@@ -3,11 +3,14 @@ package algafood.domain.service;
 import algafood.api.dtos.input.RestauranteInputDTO;
 import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.common.mapper.Mapper;
+import algafood.domain.common.MensagensDeException;
+import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.exception.RestauranteNaoEncontradoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,8 +63,13 @@ public class RestauranteService {
     @Transactional
     public void remover(Long id) {
 
-        buscarPorId(id);
-        restauranteRepository.deleteById(id);
+        try {
+            buscarPorId(id);
+            restauranteRepository.deleteById(id);
+            restauranteRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MensagensDeException.MENSAGEM_RESTAURANTE_EM_USO.getMensagem(), id));
+        }
 
     }
 

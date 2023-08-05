@@ -1,10 +1,13 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.input.EstadoInputDTO;
+import algafood.domain.common.MensagensDeException;
+import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.exception.EstadoNaoEncontradoException;
 import algafood.domain.models.Estado;
 import algafood.domain.repositories.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,9 +40,13 @@ public class EstadoService {
 
     @Transactional
     public void remover(Long id) {
-        buscarPorId(id);
-        estadoRepository.deleteById(id);
-
+        try {
+            buscarPorId(id);
+            estadoRepository.deleteById(id);
+            estadoRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MensagensDeException.MENSAGEM_ESTADO_EM_USO.getMensagem(), id));
+        }
     }
 
     @Transactional
