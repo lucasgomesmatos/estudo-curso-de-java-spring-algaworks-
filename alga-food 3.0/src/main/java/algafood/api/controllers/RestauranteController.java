@@ -76,6 +76,18 @@ public class RestauranteController {
 
     }
 
+    @PutMapping("{restauranteId}/ativo")
+    public ResponseEntity<Void> ativar(@PathVariable(value = "restauranteId") Long id) {
+        restauranteService.ativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{restauranteId}/ativo")
+    public ResponseEntity<Void> inativar(@PathVariable(value = "restauranteId") Long id) {
+        restauranteService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("{restauranteId}")
     public ResponseEntity<RestauranteOutputDTO> atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
 
@@ -93,9 +105,7 @@ public class RestauranteController {
         return atualizar(id, restauranteDto);
     }
 
-    /**
-     *
-     */
+
     private void validateRestaurante(Restaurante restaurante, String objectName) {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
         validator.validate(restaurante, bindingResult);
@@ -104,6 +114,7 @@ public class RestauranteController {
             throw new ValidacaoException(bindingResult);
         }
     }
+
 
     private static void mergeRestaurante(Map<String, Object> campos, Restaurante restauranteAtual, HttpServletRequest request) {
 
