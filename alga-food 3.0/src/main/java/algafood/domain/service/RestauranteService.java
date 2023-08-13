@@ -84,4 +84,16 @@ public class RestauranteService {
         restaurante.setCozinha(cozinha);
         return mapper.generalMapper(restauranteRepository.save(restaurante), RestauranteOutputDTO.class);
     }
+
+    @Transactional
+    public void ativar(Long id) {
+        var restaurante = buscarRestaurante(id);
+        restaurante.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long id) {
+        var restaurante = buscarRestaurante(id);
+        restaurante.inativar();
+    }
 }

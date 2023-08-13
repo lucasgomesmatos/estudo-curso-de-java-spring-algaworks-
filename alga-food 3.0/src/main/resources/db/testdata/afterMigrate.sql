@@ -53,14 +53,14 @@ insert into cidade (id, nome, estado_id)
 values (5, 'Fortaleza', 3);
 
 
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)
-values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)
-values (1, 'Cozinha Mineira', 9.5, 1, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)
-values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)
-values (4, 'Cozinha Goiana', 0, 3, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
+values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
+values (1, 'Cozinha Mineira', 9.5, 1, utc_timestamp, utc_timestamp, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
+values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
+values (4, 'Cozinha Goiana', 0, 3, utc_timestamp, utc_timestamp, true);
 
 insert into forma_pagamento (id, descricao)
 values (1, 'Cartão de crédito');

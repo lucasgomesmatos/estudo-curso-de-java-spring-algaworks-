@@ -93,6 +93,9 @@ public class RestauranteController {
         return atualizar(id, restauranteDto);
     }
 
+    /**
+     *
+     */
     private void validateRestaurante(Restaurante restaurante, String objectName) {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
         validator.validate(restaurante, bindingResult);

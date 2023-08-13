@@ -28,4 +28,6 @@ public class RestauranteOutputDTO {
     @NotNull
     private Long idCozinha;
 
+    private Boolean ativo;
+
 }
