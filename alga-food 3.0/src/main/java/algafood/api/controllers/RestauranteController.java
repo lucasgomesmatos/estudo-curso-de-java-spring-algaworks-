@@ -68,6 +68,7 @@ public class RestauranteController {
         }
     }
 
+
     @DeleteMapping("{restauranteId}")
     public ResponseEntity<Void> remover(@PathVariable(value = "restauranteId") Long id) {
 
