@@ -56,7 +56,6 @@ public class FormaPagamentoService {
     @Transactional
     public void remover(Long id) {
 
-
         try {
             buscarPorId(id);
             formaPagamentoRepository.deleteById(id);
