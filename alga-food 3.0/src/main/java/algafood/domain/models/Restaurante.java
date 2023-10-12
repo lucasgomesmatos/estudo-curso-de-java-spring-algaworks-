@@ -4,7 +4,6 @@ package algafood.domain.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -20,6 +19,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Builder
+@Data
 public class Restaurante {
 
     @Id
@@ -60,10 +60,12 @@ public class Restaurante {
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
     )
+    @ToString.Exclude
     private List<FormaPagamento> formaPagamentos = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
+    @ToString.Exclude
     private List<Produto> produtos = new ArrayList<>();
 
 
@@ -78,13 +80,13 @@ public class Restaurante {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Restaurante that = (Restaurante) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(taxaFrete, that.taxaFrete) && Objects.equals(dataCadastro, that.dataCadastro) && Objects.equals(dataAtualizacao, that.dataAtualizacao) && Objects.equals(ativo, that.ativo) && Objects.equals(cozinha, that.cozinha) && Objects.equals(endereco, that.endereco) && Objects.equals(formaPagamentos, that.formaPagamentos) && Objects.equals(produtos, that.produtos);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, nome, taxaFrete, dataCadastro, dataAtualizacao, ativo, cozinha, endereco, formaPagamentos, produtos);
     }
 }

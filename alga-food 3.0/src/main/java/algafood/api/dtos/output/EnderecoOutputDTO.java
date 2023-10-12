@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 public class EnderecoOutputDTO {
 
     private String cep;
@@ -17,5 +18,5 @@ public class EnderecoOutputDTO {
 
     private String bairro;
 
-    private CidadeOutputDTO cidade;
+    private CidadeSummaryOutputDTO cidade;
 }
