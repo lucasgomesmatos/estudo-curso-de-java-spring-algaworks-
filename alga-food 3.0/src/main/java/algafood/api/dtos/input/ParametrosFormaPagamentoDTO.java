@@ -4,11 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CidadeInputDTO {
+public class ParametrosFormaPagamentoDTO {
 
     @NotBlank
-    private String nome;
+    private String descricao;
 
-    @NotBlank
-    private Long idEstado;
+
 }

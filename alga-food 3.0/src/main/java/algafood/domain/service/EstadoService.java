@@ -1,6 +1,6 @@
 package algafood.domain.service;
 
-import algafood.api.dtos.input.EstadoInputDTO;
+import algafood.api.dtos.input.ParametrosEstadoDTO;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.exception.EstadoNaoEncontradoException;
@@ -29,8 +29,8 @@ public class EstadoService {
     }
 
     @Transactional
-    public Estado adicionar(EstadoInputDTO estadoInputDTO) {
-        var estado = new Estado(estadoInputDTO.getNome());
+    public Estado adicionar(ParametrosEstadoDTO parametrosEstadoDTO) {
+        var estado = new Estado(parametrosEstadoDTO.getNome());
         return estadoRepository.save(estado);
     }
 
@@ -50,9 +50,9 @@ public class EstadoService {
     }
 
     @Transactional
-    public Estado atualizar(Long id, EstadoInputDTO estadoInputDTO) {
+    public Estado atualizar(Long id, ParametrosEstadoDTO parametrosEstadoDTO) {
         var estado = buscarPorId(id);
-        estado.setNome(estadoInputDTO.getNome());
+        estado.setNome(parametrosEstadoDTO.getNome());
 
         return estadoRepository.save(estado);
     }

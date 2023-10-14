@@ -24,6 +24,10 @@ public class Cidade {
     @JoinColumn(nullable = false)
     private Estado estado;
 
+    public Cidade(Long id) {
+        this.id = id;
+    }
+
 
     @Override
     public boolean equals(Object o) {

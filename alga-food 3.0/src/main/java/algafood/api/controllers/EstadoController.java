@@ -1,6 +1,6 @@
 package algafood.api.controllers;
 
-import algafood.api.dtos.input.EstadoInputDTO;
+import algafood.api.dtos.input.ParametrosEstadoDTO;
 import algafood.domain.models.Estado;
 import algafood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,13 @@ public class EstadoController {
     }
 
     @PostMapping
-    public ResponseEntity<Estado> salvar(@RequestBody EstadoInputDTO estadoInputDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(estadoService.adicionar(estadoInputDTO));
+    public ResponseEntity<Estado> salvar(@RequestBody ParametrosEstadoDTO parametrosEstadoDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoService.adicionar(parametrosEstadoDTO));
     }
 
     @PutMapping("{estadoId}")
-    public ResponseEntity<Estado> atualizar(@PathVariable(value = "estadoId") Long id, @RequestBody EstadoInputDTO estadoInputDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(estadoService.atualizar(id, estadoInputDTO));
+    public ResponseEntity<Estado> atualizar(@PathVariable(value = "estadoId") Long id, @RequestBody ParametrosEstadoDTO parametrosEstadoDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(estadoService.atualizar(id, parametrosEstadoDTO));
     }
 
     @DeleteMapping("{estadoId}")

@@ -1,10 +1,7 @@
 package algafood.domain.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -13,6 +10,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Data
 public class Estado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

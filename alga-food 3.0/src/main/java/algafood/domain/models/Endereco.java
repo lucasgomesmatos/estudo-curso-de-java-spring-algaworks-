@@ -1,10 +1,16 @@
 package algafood.domain.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Endereco {
 
     @Column(name = "endereco_cep", nullable = false)

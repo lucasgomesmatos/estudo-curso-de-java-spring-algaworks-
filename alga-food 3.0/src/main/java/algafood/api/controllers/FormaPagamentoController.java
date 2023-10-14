@@ -1,9 +1,8 @@
 package algafood.api.controllers;
 
-import algafood.api.dtos.input.FormaPagamentoInputDTO;
+import algafood.api.dtos.input.ParametrosFormaPagamentoDTO;
 import algafood.api.dtos.output.FormaPagamentoOutputDTO;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
-import algafood.domain.exception.FormaPagamentoNaoEncontradoException;
 import algafood.domain.exception.NegocioException;
 import algafood.domain.service.FormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,24 +30,24 @@ public class FormaPagamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<FormaPagamentoOutputDTO> salvar(@RequestBody FormaPagamentoInputDTO formaPagamentoInputDTO) {
+    public ResponseEntity<FormaPagamentoOutputDTO> salvar(@RequestBody ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
 
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(formaPagamentoService.adicionar(formaPagamentoInputDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(formaPagamentoService.adicionar(parametrosFormaPagamentoDTO));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
 
     @PutMapping("{formaPagamentoId}")
-    public ResponseEntity<FormaPagamentoOutputDTO> atualizar(@PathVariable(value = "formaPagamentoId") Long id, @RequestBody FormaPagamentoInputDTO formaPagamentoInputDTO) {
+    public ResponseEntity<FormaPagamentoOutputDTO> atualizar(@PathVariable(value = "formaPagamentoId") Long id, @RequestBody ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
 
 
 
         var formaPagamento = formaPagamentoService.buscarFormaPagamento(id);
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoService.atualizar(formaPagamentoInputDTO, formaPagamento));
+            return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoService.atualizar(parametrosFormaPagamentoDTO, formaPagamento));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }

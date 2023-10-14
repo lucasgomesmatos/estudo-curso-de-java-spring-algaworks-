@@ -1,6 +1,6 @@
 package algafood.api.controllers;
 
-import algafood.api.dtos.input.RestauranteInputDTO;
+import algafood.api.dtos.input.ParametrosRestauranteDTO;
 import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.core.ValidacaoException;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -48,21 +48,21 @@ public class RestauranteController {
     }
 
     @PostMapping
-    public ResponseEntity<RestauranteOutputDTO> salvar(@RequestBody @Valid RestauranteInputDTO restauranteInputDTO) {
+    public ResponseEntity<RestauranteOutputDTO> salvar(@RequestBody @Valid ParametrosRestauranteDTO parametrosRestauranteDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(restauranteInputDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.adicionar(parametrosRestauranteDTO));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
 
     @PutMapping("{restauranteId}")
-    public ResponseEntity<RestauranteOutputDTO> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody RestauranteInputDTO restauranteInputDTO) {
+    public ResponseEntity<RestauranteOutputDTO> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody @Valid ParametrosRestauranteDTO parametrosRestauranteDTO) {
 
-        var restaurante = restauranteService.buscarRestaurante(id);
+       var restaurante =  restauranteService.buscarRestaurante(id);
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(restauranteInputDTO, restaurante));
+            return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(parametrosRestauranteDTO, restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -102,7 +102,7 @@ public class RestauranteController {
         validateRestaurante(restauranteAtual, "restaurante");
         
         assert restauranteAtual != null;
-        var restauranteDto = new RestauranteInputDTO(restauranteAtual);
+        var restauranteDto = new ParametrosRestauranteDTO(restauranteAtual);
         return atualizar(id, restauranteDto);
     }
 

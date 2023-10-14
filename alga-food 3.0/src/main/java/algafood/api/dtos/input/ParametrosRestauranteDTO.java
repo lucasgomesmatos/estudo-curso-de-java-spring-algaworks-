@@ -1,6 +1,7 @@
 package algafood.api.dtos.input;
 
 import algafood.domain.models.Restaurante;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -10,11 +11,11 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-// @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatorio = "Frete Grátis")
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestauranteInputDTO {
+public class ParametrosRestauranteDTO {
 
     @NotBlank
     private String nome;
@@ -23,12 +24,26 @@ public class RestauranteInputDTO {
     @PositiveOrZero
     private BigDecimal precoFrete;
 
+    @Valid
     @NotNull
-    private Long idCozinha;
+    private Cozinha cozinha;
 
-    public RestauranteInputDTO(Restaurante restaurante) {
+    @Valid
+    @NotNull
+    EnderecoDTO endereco;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class Cozinha {
+
+        @NotNull
+        private Long id;
+    }
+
+    public ParametrosRestauranteDTO(Restaurante restaurante) {
         this.nome = restaurante.getNome();
         this.precoFrete = restaurante.getTaxaFrete();
-        this.idCozinha = restaurante.getCozinha().getId();
+        this.cozinha.id = restaurante.getCozinha().getId();
     }
 }

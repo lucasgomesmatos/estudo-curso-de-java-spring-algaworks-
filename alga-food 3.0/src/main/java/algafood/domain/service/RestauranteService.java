@@ -1,12 +1,14 @@
 package algafood.domain.service;
 
-import algafood.api.dtos.input.RestauranteInputDTO;
+import algafood.api.dtos.input.ParametrosRestauranteDTO;
 import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.common.mapper.Mapper;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.exception.RestauranteNaoEncontradoException;
+import algafood.domain.models.Cidade;
 import algafood.domain.models.Cozinha;
+import algafood.domain.models.Endereco;
 import algafood.domain.models.Restaurante;
 import algafood.domain.repositories.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ public class RestauranteService {
     @Autowired
     private CozinhaService cozinhaService;
 
+
     @Autowired
     Mapper mapper;
 
@@ -38,14 +41,14 @@ public class RestauranteService {
     }
 
     @Transactional
-    public RestauranteOutputDTO adicionar(RestauranteInputDTO restauranteInputDTO) {
-        var cozinhaOutput = cozinhaService.buscar(restauranteInputDTO.getIdCozinha());
+    public RestauranteOutputDTO adicionar(ParametrosRestauranteDTO parametrosRestauranteDTO) {
+        var cozinhaOutput = cozinhaService.buscar(parametrosRestauranteDTO.getCozinha().getId());
 
         var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
 
         var restaurante = Restaurante.builder()
-                .nome(restauranteInputDTO.getNome())
-                .taxaFrete(restauranteInputDTO.getPrecoFrete())
+                .nome(parametrosRestauranteDTO.getNome())
+                .taxaFrete(parametrosRestauranteDTO.getPrecoFrete())
                 .cozinha(cozinha)
                 .build();
 
@@ -74,14 +77,27 @@ public class RestauranteService {
     }
 
     @Transactional
-    public RestauranteOutputDTO atualizar(RestauranteInputDTO restauranteInputDTO, Restaurante restaurante) {
+    public RestauranteOutputDTO atualizar(ParametrosRestauranteDTO parametrosRestauranteDTO, Restaurante restaurante) {
 
-        var cozinhaOutput = cozinhaService.buscar(restauranteInputDTO.getIdCozinha());
+        var cozinhaOutput = cozinhaService.buscar(parametrosRestauranteDTO.getCozinha().getId());
         var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
 
-        restaurante.setNome(restauranteInputDTO.getNome());
-        restaurante.setTaxaFrete(restauranteInputDTO.getPrecoFrete());
+        var endereco = Endereco.builder()
+                .cep(parametrosRestauranteDTO.getEndereco().getCep())
+                .numero(parametrosRestauranteDTO.getEndereco().getNumero())
+                .logradouro(parametrosRestauranteDTO.getEndereco().getLogradouro())
+                .complemento(parametrosRestauranteDTO.getEndereco().getComplemento())
+                .bairro(parametrosRestauranteDTO.getEndereco().getBairro())
+                .cidade(new Cidade(parametrosRestauranteDTO.getEndereco().getCidade().getId()))
+                .build();
+
+
+        restaurante.setNome(parametrosRestauranteDTO.getNome());
+        restaurante.setTaxaFrete(parametrosRestauranteDTO.getPrecoFrete());
         restaurante.setCozinha(cozinha);
+        restaurante.setEndereco(endereco);
+
+
         return mapper.generalMapper(restauranteRepository.save(restaurante), RestauranteOutputDTO.class);
     }
 

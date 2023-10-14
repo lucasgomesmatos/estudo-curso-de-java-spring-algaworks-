@@ -10,7 +10,11 @@ import java.util.stream.Collectors;
 @Component
 public class Mapper {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final ModelMapper modelMapper;
+
+    static {
+        modelMapper = new ModelMapper();
+    }
 
     public <T, S> S generalMapper(T input, Class<S> output) {
         return modelMapper.map(input, output);
@@ -24,6 +28,8 @@ public class Mapper {
     public <S, T> void addMapping(Class<S> input, Class<T> output, ExpressionMap<S, T> expressionMap) {
         modelMapper.typeMap(input, output).addMappings(expressionMap);
     }
+
+
 
 
 }

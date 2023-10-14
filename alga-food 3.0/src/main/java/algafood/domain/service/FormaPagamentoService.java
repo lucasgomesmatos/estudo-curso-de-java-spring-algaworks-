@@ -1,6 +1,6 @@
 package algafood.domain.service;
 
-import algafood.api.dtos.input.FormaPagamentoInputDTO;
+import algafood.api.dtos.input.ParametrosFormaPagamentoDTO;
 import algafood.api.dtos.output.FormaPagamentoOutputDTO;
 import algafood.common.mapper.Mapper;
 import algafood.domain.common.MensagensDeException;
@@ -35,10 +35,10 @@ public class FormaPagamentoService {
     }
 
     @Transactional
-    public FormaPagamentoOutputDTO adicionar(FormaPagamentoInputDTO formaPagamentoInputDTO) {
+    public FormaPagamentoOutputDTO adicionar(ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
 
         var formaPagamento = FormaPagamento.builder()
-                .descricao(formaPagamentoInputDTO.getDescricao())
+                .descricao(parametrosFormaPagamentoDTO.getDescricao())
                 .build();
 
         return mapper.generalMapper(formaPagamentoRepository.save(formaPagamento), FormaPagamentoOutputDTO.class);
@@ -66,8 +66,8 @@ public class FormaPagamentoService {
     }
 
     @Transactional
-    public FormaPagamentoOutputDTO atualizar(FormaPagamentoInputDTO formaPagamentoInputDTO, FormaPagamento formaPagamento) {
-        formaPagamento.setDescricao(formaPagamentoInputDTO.getDescricao());
+    public FormaPagamentoOutputDTO atualizar(ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO, FormaPagamento formaPagamento) {
+        formaPagamento.setDescricao(parametrosFormaPagamentoDTO.getDescricao());
         return mapper.generalMapper(formaPagamentoRepository.save(formaPagamento), FormaPagamentoOutputDTO.class);
 
     }

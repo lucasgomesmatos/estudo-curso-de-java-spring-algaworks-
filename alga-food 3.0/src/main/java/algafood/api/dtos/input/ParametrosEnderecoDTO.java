@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EnderecoInputDTO {
+public class ParametrosEnderecoDTO {
 
     private String cep;
 
@@ -17,5 +17,5 @@ public class EnderecoInputDTO {
 
     private String bairro;
 
-    private CidadeInputDTO cidade;
+    private ParametrosCidadeDTO cidade;
 }
