@@ -42,7 +42,7 @@ public class Restaurante {
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataAtualizacao;
 
-    private Boolean ativo = Boolean.TRUE;
+    private Boolean ativo = true;
 
     // @JsonIgnore
     // @JsonIgnoreProperties("hibernateLazyInitializer")

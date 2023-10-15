@@ -45,13 +45,25 @@ public class RestauranteService {
     @Transactional
     public RestauranteOutputDTO adicionar(ParametrosRestauranteDTO parametrosRestauranteDTO) {
         var cozinhaOutput = cozinhaService.buscar(parametrosRestauranteDTO.getCozinha().getId());
-
         var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
+
+        var cidade = cidadeService.buscar(parametrosRestauranteDTO.getEndereco().getCidade().getId());
+
+        var endereco = Endereco.builder()
+                .cep(parametrosRestauranteDTO.getEndereco().getCep())
+                .numero(parametrosRestauranteDTO.getEndereco().getNumero())
+                .logradouro(parametrosRestauranteDTO.getEndereco().getLogradouro())
+                .complemento(parametrosRestauranteDTO.getEndereco().getComplemento())
+                .bairro(parametrosRestauranteDTO.getEndereco().getBairro())
+                .cidade(cidade)
+                .build();
 
         var restaurante = Restaurante.builder()
                 .nome(parametrosRestauranteDTO.getNome())
                 .taxaFrete(parametrosRestauranteDTO.getPrecoFrete())
                 .cozinha(cozinha)
+                .endereco(endereco)
+                .ativo(true)
                 .build();
 
         return mapper.generalMapper(restauranteRepository.save(restaurante), RestauranteOutputDTO.class);
