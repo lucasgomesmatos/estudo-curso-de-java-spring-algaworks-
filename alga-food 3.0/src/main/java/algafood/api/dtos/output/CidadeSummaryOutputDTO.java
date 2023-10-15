@@ -13,7 +13,5 @@ public class CidadeSummaryOutputDTO {
 
     private String nome;
 
-    private String nomeEstado;
-
 
 }

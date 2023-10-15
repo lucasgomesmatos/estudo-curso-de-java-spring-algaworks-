@@ -25,7 +25,6 @@ public class ParametrosRestauranteDTO {
     private BigDecimal precoFrete;
 
     @Valid
-    @NotNull
     private Cozinha cozinha;
 
     @Valid
@@ -37,6 +36,7 @@ public class ParametrosRestauranteDTO {
     @Data
     public static class Cozinha {
 
+        @Valid
         @NotNull
         private Long id;
     }

@@ -6,7 +6,6 @@ import algafood.common.mapper.Mapper;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
 import algafood.domain.exception.RestauranteNaoEncontradoException;
-import algafood.domain.models.Cidade;
 import algafood.domain.models.Cozinha;
 import algafood.domain.models.Endereco;
 import algafood.domain.models.Restaurante;
@@ -26,6 +25,9 @@ public class RestauranteService {
 
     @Autowired
     private CozinhaService cozinhaService;
+
+    @Autowired
+    private CidadeService cidadeService;
 
 
     @Autowired
@@ -82,13 +84,15 @@ public class RestauranteService {
         var cozinhaOutput = cozinhaService.buscar(parametrosRestauranteDTO.getCozinha().getId());
         var cozinha = mapper.generalMapper(cozinhaOutput, Cozinha.class);
 
+        var cidade = cidadeService.buscar(parametrosRestauranteDTO.getEndereco().getCidade().getId());
+
         var endereco = Endereco.builder()
                 .cep(parametrosRestauranteDTO.getEndereco().getCep())
                 .numero(parametrosRestauranteDTO.getEndereco().getNumero())
                 .logradouro(parametrosRestauranteDTO.getEndereco().getLogradouro())
                 .complemento(parametrosRestauranteDTO.getEndereco().getComplemento())
                 .bairro(parametrosRestauranteDTO.getEndereco().getBairro())
-                .cidade(new Cidade(parametrosRestauranteDTO.getEndereco().getCidade().getId()))
+                .cidade(cidade)
                 .build();
 
 

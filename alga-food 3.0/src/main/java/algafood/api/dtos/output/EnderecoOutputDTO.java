@@ -1,7 +1,6 @@
 package algafood.api.dtos.output;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,5 +16,28 @@ public class EnderecoOutputDTO {
 
     private String bairro;
 
-    private CidadeSummaryOutputDTO cidade;
+    private Cidade cidade;
+
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class Cidade {
+
+        private Long id;
+
+        private String nome;
+
+        private Estado estado;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class Estado {
+
+        private Long id;
+
+        private String nome;
+    }
 }
