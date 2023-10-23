@@ -1,19 +1,31 @@
+set
+foreign_key_checks = 0;
 
-set foreign_key_checks = 0;
+DELETE
+FROM cidade;
+DELETE
+FROM cozinha;
+DELETE
+FROM estado;
+DELETE
+FROM forma_pagamento;
+DELETE
+FROM grupo;
+DELETE
+FROM grupo_permissao;
+DELETE
+FROM permissao;
+DELETE
+FROM restaurante;
+DELETE
+FROM restaurante_forma_pagamento;
+DELETE
+FROM usuario;
+DELETE
+FROM usuario_grupo;
 
-DELETE FROM cidade;
-DELETE FROM cozinha;
-DELETE FROM estado;
-DELETE FROM forma_pagamento;
-DELETE FROM grupo;
-DELETE FROM grupo_permissao;
-DELETE FROM permissao;
-DELETE FROM restaurante;
-DELETE FROM restaurante_forma_pagamento;
-DELETE FROM usuario;
-DELETE FROM usuario_grupo;
-
-set foreign_key_checks = 1;
+set
+foreign_key_checks = 1;
 
 alter table cidade auto_increment = 1;
 alter table cozinha auto_increment = 1;
@@ -53,8 +65,10 @@ insert into cidade (id, nome, estado_id)
 values (5, 'Fortaleza', 3);
 
 
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, endereco_cidade_id, endereco_bairro, endereco_cep, endereco_logradouro, endereco_numero)
-values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp, true, 1, 'centro', '39000-000', 'Rua das Flores', '310');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, endereco_cidade_id,
+                         endereco_bairro, endereco_cep, endereco_logradouro, endereco_numero)
+values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp, true, 1, 'centro', '39000-000', 'Rua das Flores',
+        '310');
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
 values (1, 'Cozinha Mineira', 9.5, 1, utc_timestamp, utc_timestamp, true);
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
@@ -104,3 +118,12 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id)
 values ('T-Bone',
         'Corte muito saboroso, com um osso em formato de T, sendo de um lado o contrafilé e do outro o filé mignon', 89,
         1, 4);
+
+insert into grupo (nome)
+values ('Vendedor'),
+       ('Gerente'),
+       ('Compador');
+
+insert into usuario (data_cadastro, email, nome, senha)
+values (utc_timestamp, 'joao@gmail.com', 'João Silva', '123@123'), (utc_timestamp, 'maria@gmail.com', 'Maria Silva', '123@123'),
+                                                            (utc_timestamp, 'jose@gmail.com', 'José Silva', '123@123');
