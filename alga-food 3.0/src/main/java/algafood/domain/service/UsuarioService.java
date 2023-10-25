@@ -1,17 +1,22 @@
 package algafood.domain.service;
 
+import algafood.api.dtos.input.ParametrosAtualizarSenhaUsuarioDTO;
+import algafood.api.dtos.input.ParametrosAtualizarUsuarioDTO;
 import algafood.api.dtos.input.ParametrosUsuarioDTO;
 import algafood.api.dtos.output.UsuarioDTO;
 import algafood.common.mapper.Mapper;
 import algafood.domain.common.MensagensDeException;
+import algafood.domain.exception.SenhaUsuarioNaoCoincidenteException;
 import algafood.domain.exception.UsuarioException;
 import algafood.domain.exception.UsuarioExistenteException;
 import algafood.domain.models.Usuario;
 import algafood.domain.repositories.UsuarioRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UsuarioService {
@@ -39,6 +44,7 @@ public class UsuarioService {
         return mapper.mapCollection(usuarioRespository.findAll(), UsuarioDTO.class);
     }
 
+    @Transactional
     public UsuarioDTO adicionar(ParametrosUsuarioDTO parametrosUsuario) {
 
 
@@ -56,5 +62,28 @@ public class UsuarioService {
 
         return mapper.generalMapper(usuarioRespository.save(usuario), UsuarioDTO.class);
 
+    }
+
+    @Transactional
+    public UsuarioDTO atualizar( Long id, ParametrosAtualizarUsuarioDTO parametrosUsuario) {
+        var usuarioAutal = buscarPorId(id);
+
+        usuarioAutal.setEmail(parametrosUsuario.getEmail());
+        usuarioAutal.setNome(parametrosUsuario.getNome());
+
+        return mapper.generalMapper(usuarioRespository.save(usuarioAutal), UsuarioDTO.class);
+
+    }
+
+    @Transactional
+    public void atualizarSenha(Long id, ParametrosAtualizarSenhaUsuarioDTO parametrosAtualizarSenhaUsuario) {
+        var usuarioAutal = buscarPorId(id);
+
+        if (!Objects.equals(usuarioAutal.getSenha(), parametrosAtualizarSenhaUsuario.getSenhaAtual())) {
+            throw new SenhaUsuarioNaoCoincidenteException(String.format(MensagensDeException.MENSAGEM_SENHA_USUARIO_NAO_COINCIDENTE.getMensagem()));
+        }
+
+        usuarioAutal.setSenha(parametrosAtualizarSenhaUsuario.getNovaSenha());
+        usuarioRespository.save(usuarioAutal);
     }
 }

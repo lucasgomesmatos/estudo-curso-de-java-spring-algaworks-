@@ -1,5 +1,7 @@
 package algafood.api.controllers;
 
+import algafood.api.dtos.input.ParametrosAtualizarSenhaUsuarioDTO;
+import algafood.api.dtos.input.ParametrosAtualizarUsuarioDTO;
 import algafood.api.dtos.input.ParametrosUsuarioDTO;
 import algafood.api.dtos.output.UsuarioDTO;
 import algafood.domain.service.UsuarioService;
@@ -31,5 +33,17 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<UsuarioDTO> adicionar(@RequestBody @Valid ParametrosUsuarioDTO parametrosUsuarioDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.adicionar(parametrosUsuarioDTO));
+    }
+
+    @PutMapping("{usuarioId}")
+    public ResponseEntity<UsuarioDTO> atualizar(@PathVariable(name = "usuarioId") Long id, @RequestBody @Valid ParametrosAtualizarUsuarioDTO parametrosUsuarioDTO) {
+        return ResponseEntity.ok(usuarioService.atualizar(id, parametrosUsuarioDTO));
+    }
+
+    @PutMapping("{usuarioId}/senha")
+    public ResponseEntity<Void> atualizarSenha(@PathVariable(name = "usuarioId") Long id, @RequestBody @Valid ParametrosAtualizarSenhaUsuarioDTO parametrosAtualizarSenhaUsuario) {
+        usuarioService.atualizarSenha(id, parametrosAtualizarSenhaUsuario);
+
+        return ResponseEntity.noContent().build();
     }
 }

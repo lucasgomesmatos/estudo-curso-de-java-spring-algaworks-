@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ParametrosUsuarioDTO {
+public class ParametrosAtualizarUsuarioDTO {
 
     @NotBlank
     private String nome;
@@ -19,6 +19,4 @@ public class ParametrosUsuarioDTO {
     @Email
     private String email;
 
-    @NotBlank
-    private String senha;
 }

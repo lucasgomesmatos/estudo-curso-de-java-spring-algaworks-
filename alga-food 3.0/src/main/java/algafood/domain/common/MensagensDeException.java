@@ -17,7 +17,9 @@ public enum MensagensDeException {
 
     MENSAGEM_FORMA_GRUPO("Grupo de código %d não pode ser removido, pois está em uso"),
 
-    MENSAGEM_USUARIO_EXISTENTE("Já existe um Usuário cadastrado com esse email %s !");
+    MENSAGEM_USUARIO_EXISTENTE("Já existe um Usuário cadastrado com esse email %s !"),
+
+    MENSAGEM_SENHA_USUARIO_NAO_COINCIDENTE("A sua senha informada não coincide com a senha do usuário");
 
     private final String mensagem;
 

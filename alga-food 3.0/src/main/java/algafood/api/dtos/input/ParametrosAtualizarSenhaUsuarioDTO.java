@@ -1,6 +1,5 @@
 package algafood.api.dtos.input;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ParametrosUsuarioDTO {
+public class ParametrosAtualizarSenhaUsuarioDTO {
 
     @NotBlank
-    private String nome;
-
-    @Email
-    private String email;
+    private String senhaAtual;
 
     @NotBlank
-    private String senha;
+    private String novaSenha;
+
 }
