@@ -27,13 +27,22 @@ public class UsuarioService {
     @Autowired
     private Mapper mapper;
 
+
     private Usuario buscarPorId(Long id) {
         return usuarioRespository.findById(id)
                 .orElseThrow(() -> new UsuarioException(id));
     }
 
-    private Usuario buscarPorEmail(String email) {
-        return usuarioRespository.findByEmail(email);
+    private void verificarUsuarioExistentePorEmail(Usuario usuario) {
+        usuarioRespository.detach(usuario);
+        var usuarioExistente = usuarioRespository.findByEmail(usuario.getEmail());
+
+        if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+            throw new UsuarioExistenteException(
+                    String.format(MensagensDeException.MENSAGEM_USUARIO_EXISTENTE.getMensagem(),
+                            usuarioExistente.get().getEmail()));
+        }
+
     }
 
     public UsuarioDTO buscar(Long id) {
@@ -47,36 +56,30 @@ public class UsuarioService {
     @Transactional
     public UsuarioDTO adicionar(ParametrosUsuarioDTO parametrosUsuario) {
 
+        var usuario = mapper.generalMapper(parametrosUsuario, Usuario.class);
+        verificarUsuarioExistentePorEmail(usuario);
 
-        var usuarioExistente = buscarPorEmail(parametrosUsuario.getEmail());
-
-        if (usuarioExistente != null) {
-            throw new UsuarioExistenteException(String.format(MensagensDeException.MENSAGEM_USUARIO_EXISTENTE.getMensagem(), usuarioExistente.getEmail()));
-        }
-
-        var usuario = Usuario.builder()
-                .nome(parametrosUsuario.getNome())
-                .email(parametrosUsuario.getEmail())
-                .senha(parametrosUsuario.getSenha())
-                .build();
 
         return mapper.generalMapper(usuarioRespository.save(usuario), UsuarioDTO.class);
 
     }
 
     @Transactional
-    public UsuarioDTO atualizar( Long id, ParametrosAtualizarUsuarioDTO parametrosUsuario) {
+    public UsuarioDTO atualizar(Long id, ParametrosAtualizarUsuarioDTO parametrosUsuario) {
+
         var usuarioAutal = buscarPorId(id);
+        var usuario = mapper.generalMapper(usuarioAutal, Usuario.class);
+        verificarUsuarioExistentePorEmail(usuario);
 
-        usuarioAutal.setEmail(parametrosUsuario.getEmail());
-        usuarioAutal.setNome(parametrosUsuario.getNome());
+        usuario.setNome(parametrosUsuario.getNome());
+        usuario.setEmail(parametrosUsuario.getEmail());
 
-        return mapper.generalMapper(usuarioRespository.save(usuarioAutal), UsuarioDTO.class);
+        return mapper.generalMapper(usuarioRespository.save(usuario), UsuarioDTO.class);
 
     }
 
     @Transactional
-    public void atualizarSenha(Long id, ParametrosAtualizarSenhaUsuarioDTO parametrosAtualizarSenhaUsuario) {
+    public void alterarSenha(Long id, ParametrosAtualizarSenhaUsuarioDTO parametrosAtualizarSenhaUsuario) {
         var usuarioAutal = buscarPorId(id);
 
         if (!Objects.equals(usuarioAutal.getSenha(), parametrosAtualizarSenhaUsuario.getSenhaAtual())) {

@@ -17,6 +17,7 @@ public class ParametrosUsuarioDTO {
     private String nome;
 
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank

@@ -1,11 +1,12 @@
 package algafood.domain.repositories;
 
 import algafood.domain.models.Usuario;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UsuarioRespository extends JpaRepository<Usuario, Long> {
+import java.util.Optional;
 
-    Usuario findByEmail(String email);
+@Repository
+public interface UsuarioRespository extends CustomJpaRepository<Usuario, Long>  {
+
+    Optional<Usuario> findByEmail(String email);
 }
