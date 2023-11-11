@@ -33,7 +33,7 @@ public class UsuarioService {
                 .orElseThrow(() -> new UsuarioException(id));
     }
 
-    private void verificarUsuarioExistentePorEmail(Usuario usuario) {
+    private Usuario salvar(Usuario usuario) {
         usuarioRespository.detach(usuario);
         var usuarioExistente = usuarioRespository.findByEmail(usuario.getEmail());
 
@@ -42,6 +42,8 @@ public class UsuarioService {
                     String.format(MensagensDeException.MENSAGEM_USUARIO_EXISTENTE.getMensagem(),
                             usuarioExistente.get().getEmail()));
         }
+
+        return usuarioRespository.save(usuario);
 
     }
 
@@ -57,10 +59,9 @@ public class UsuarioService {
     public UsuarioDTO adicionar(ParametrosUsuarioDTO parametrosUsuario) {
 
         var usuario = mapper.generalMapper(parametrosUsuario, Usuario.class);
-        verificarUsuarioExistentePorEmail(usuario);
+        var usuarioSalvo = salvar(usuario);
 
-
-        return mapper.generalMapper(usuarioRespository.save(usuario), UsuarioDTO.class);
+        return mapper.generalMapper(usuarioSalvo, UsuarioDTO.class);
 
     }
 
@@ -68,13 +69,12 @@ public class UsuarioService {
     public UsuarioDTO atualizar(Long id, ParametrosAtualizarUsuarioDTO parametrosUsuario) {
 
         var usuarioAutal = buscarPorId(id);
-        var usuario = mapper.generalMapper(usuarioAutal, Usuario.class);
-        verificarUsuarioExistentePorEmail(usuario);
 
-        usuario.setNome(parametrosUsuario.getNome());
-        usuario.setEmail(parametrosUsuario.getEmail());
+        usuarioAutal.setNome(parametrosUsuario.getNome());
+        usuarioAutal.setEmail(parametrosUsuario.getEmail());
+        var usuarioSalvo = salvar(usuarioAutal);
 
-        return mapper.generalMapper(usuarioRespository.save(usuario), UsuarioDTO.class);
+        return mapper.generalMapper(usuarioSalvo, UsuarioDTO.class);
 
     }
 
