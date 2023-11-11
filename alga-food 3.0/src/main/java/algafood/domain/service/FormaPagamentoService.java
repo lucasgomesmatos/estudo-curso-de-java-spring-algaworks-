@@ -1,7 +1,7 @@
 package algafood.domain.service;
 
 import algafood.api.dtos.input.ParametrosFormaPagamentoDTO;
-import algafood.api.dtos.output.FormaPagamentoOutputDTO;
+import algafood.api.dtos.output.FormaPagamentoDTO;
 import algafood.common.mapper.Mapper;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
@@ -30,23 +30,23 @@ public class FormaPagamentoService {
                 .orElseThrow(() -> new FormaPagamentoNaoEncontradoException(id));
     }
 
-    public List<FormaPagamentoOutputDTO> listar() {
-        return mapper.mapCollection(formaPagamentoRepository.findAll(), FormaPagamentoOutputDTO.class);
+    public List<FormaPagamentoDTO> listar() {
+        return mapper.mapCollection(formaPagamentoRepository.findAll(), FormaPagamentoDTO.class);
     }
 
     @Transactional
-    public FormaPagamentoOutputDTO adicionar(ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
+    public FormaPagamentoDTO adicionar(ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
 
         var formaPagamento = FormaPagamento.builder()
                 .descricao(parametrosFormaPagamentoDTO.getDescricao())
                 .build();
 
-        return mapper.generalMapper(formaPagamentoRepository.save(formaPagamento), FormaPagamentoOutputDTO.class);
+        return mapper.generalMapper(formaPagamentoRepository.save(formaPagamento), FormaPagamentoDTO.class);
 
     }
 
-    public FormaPagamentoOutputDTO buscar(Long id) {
-        return mapper.generalMapper(buscarPorId(id), FormaPagamentoOutputDTO.class);
+    public FormaPagamentoDTO buscar(Long id) {
+        return mapper.generalMapper(buscarPorId(id), FormaPagamentoDTO.class);
     }
 
     public FormaPagamento buscarFormaPagamento(Long id) {
@@ -66,9 +66,9 @@ public class FormaPagamentoService {
     }
 
     @Transactional
-    public FormaPagamentoOutputDTO atualizar(ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO, FormaPagamento formaPagamento) {
+    public FormaPagamentoDTO atualizar(ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO, FormaPagamento formaPagamento) {
         formaPagamento.setDescricao(parametrosFormaPagamentoDTO.getDescricao());
-        return mapper.generalMapper(formaPagamentoRepository.save(formaPagamento), FormaPagamentoOutputDTO.class);
+        return mapper.generalMapper(formaPagamentoRepository.save(formaPagamento), FormaPagamentoDTO.class);
 
     }
 }

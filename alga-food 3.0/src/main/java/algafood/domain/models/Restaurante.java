@@ -9,9 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -61,7 +59,7 @@ public class Restaurante {
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
     )
     @ToString.Exclude
-    private List<FormaPagamento> formaPagamentos = new ArrayList<>();
+    private Set<FormaPagamento> formaPagamentos = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
@@ -75,6 +73,14 @@ public class Restaurante {
 
     public void inativar() {
         setAtivo(false);
+    }
+
+    public boolean associarFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormaPagamentos().add(formaPagamento);
+    }
+
+    public boolean desassociarFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormaPagamentos().remove(formaPagamento);
     }
 
     @Override

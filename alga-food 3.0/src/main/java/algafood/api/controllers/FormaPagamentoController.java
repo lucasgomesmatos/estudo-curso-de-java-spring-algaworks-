@@ -1,7 +1,7 @@
 package algafood.api.controllers;
 
 import algafood.api.dtos.input.ParametrosFormaPagamentoDTO;
-import algafood.api.dtos.output.FormaPagamentoOutputDTO;
+import algafood.api.dtos.output.FormaPagamentoDTO;
 import algafood.domain.exception.EntidadeNaoEncontradaException;
 import algafood.domain.exception.NegocioException;
 import algafood.domain.service.FormaPagamentoService;
@@ -20,17 +20,17 @@ public class FormaPagamentoController {
     private FormaPagamentoService formaPagamentoService;
 
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoOutputDTO>> listar() {
+    public ResponseEntity<List<FormaPagamentoDTO>> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoService.listar());
     }
 
     @GetMapping("{formaPagamentoId}")
-    public ResponseEntity<FormaPagamentoOutputDTO> buscar(@PathVariable(value = "formaPagamentoId") Long id) {
+    public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable(value = "formaPagamentoId") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoService.buscar(id));
     }
 
     @PostMapping
-    public ResponseEntity<FormaPagamentoOutputDTO> salvar(@RequestBody ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
+    public ResponseEntity<FormaPagamentoDTO> salvar(@RequestBody ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
 
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(formaPagamentoService.adicionar(parametrosFormaPagamentoDTO));
@@ -40,7 +40,7 @@ public class FormaPagamentoController {
     }
 
     @PutMapping("{formaPagamentoId}")
-    public ResponseEntity<FormaPagamentoOutputDTO> atualizar(@PathVariable(value = "formaPagamentoId") Long id, @RequestBody ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
+    public ResponseEntity<FormaPagamentoDTO> atualizar(@PathVariable(value = "formaPagamentoId") Long id, @RequestBody ParametrosFormaPagamentoDTO parametrosFormaPagamentoDTO) {
 
 
 

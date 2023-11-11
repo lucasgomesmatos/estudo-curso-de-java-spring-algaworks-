@@ -29,6 +29,8 @@ public class RestauranteService {
     @Autowired
     private CidadeService cidadeService;
 
+    @Autowired
+    private FormaPagamentoService formaPagamentoService;
 
     @Autowired
     Mapper mapper;
@@ -127,5 +129,19 @@ public class RestauranteService {
     public void inativar(Long id) {
         var restaurante = buscarRestaurante(id);
         restaurante.inativar();
+    }
+
+    @Transactional
+    public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        var restaurante = buscarPorId(restauranteId);
+        var formaPagamento = formaPagamentoService.buscarFormaPagamento(formaPagamentoId);
+        restaurante.associarFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        var restaurante = buscarPorId(restauranteId);
+        var formaPagamento = formaPagamentoService.buscarFormaPagamento(formaPagamentoId);
+        restaurante.desassociarFormaPagamento(formaPagamento);
     }
 }

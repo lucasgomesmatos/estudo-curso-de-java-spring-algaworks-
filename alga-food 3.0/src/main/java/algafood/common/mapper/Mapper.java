@@ -4,6 +4,7 @@ import org.modelmapper.ExpressionMap;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class Mapper {
         return modelMapper.map(input, output);
     }
 
-    public <T, S> List<S> mapCollection(List<T> input, Class<S> output) {
+    public <T, S> List<S> mapCollection(Collection<T> input, Class<S> output) {
         return input.stream().map(entity -> generalMapper(entity, output))
                 .collect(Collectors.toList());
     }
@@ -28,8 +29,6 @@ public class Mapper {
     public <S, T> void addMapping(Class<S> input, Class<T> output, ExpressionMap<S, T> expressionMap) {
         modelMapper.typeMap(input, output).addMappings(expressionMap);
     }
-
-
 
 
 }
