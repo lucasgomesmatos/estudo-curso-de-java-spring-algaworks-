@@ -24,7 +24,6 @@ public class RestauranteFormaPagamentoController {
     public ResponseEntity<Collection<FormaPagamentoDTO>> listar(@PathVariable Long restauranteId) {
 
         var restaurante = restauranteService.buscarRestaurante(restauranteId);
-
         return ResponseEntity.status(HttpStatus.OK)
                 .body(mapper.mapCollection(restaurante.getFormaPagamentos(), FormaPagamentoDTO.class));
     }
