@@ -1,15 +1,13 @@
 package algafood.domain.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor

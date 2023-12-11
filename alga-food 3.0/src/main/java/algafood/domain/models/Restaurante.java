@@ -17,9 +17,10 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Builder
-@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Restaurante {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -75,24 +76,13 @@ public class Restaurante {
         setAtivo(false);
     }
 
-    public boolean associarFormaPagamento(FormaPagamento formaPagamento) {
-        return getFormaPagamentos().add(formaPagamento);
+    public void associarFormaPagamento(FormaPagamento formaPagamento) {
+        getFormaPagamentos().add(formaPagamento);
     }
 
-    public boolean desassociarFormaPagamento(FormaPagamento formaPagamento) {
-        return getFormaPagamentos().remove(formaPagamento);
+    public void desassociarFormaPagamento(FormaPagamento formaPagamento) {
+        getFormaPagamentos().remove(formaPagamento);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Restaurante that = (Restaurante) o;
-        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(taxaFrete, that.taxaFrete) && Objects.equals(dataCadastro, that.dataCadastro) && Objects.equals(dataAtualizacao, that.dataAtualizacao) && Objects.equals(ativo, that.ativo) && Objects.equals(cozinha, that.cozinha) && Objects.equals(endereco, that.endereco) && Objects.equals(formaPagamentos, that.formaPagamentos) && Objects.equals(produtos, that.produtos);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, taxaFrete, dataCadastro, dataAtualizacao, ativo, cozinha, endereco, formaPagamentos, produtos);
-    }
 }

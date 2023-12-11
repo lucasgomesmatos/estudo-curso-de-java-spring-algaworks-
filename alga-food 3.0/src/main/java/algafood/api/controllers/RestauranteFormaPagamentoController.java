@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/restaurantes/{restauranteId}/formas-pagamento")
@@ -21,7 +21,7 @@ public class RestauranteFormaPagamentoController {
     Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<Collection<FormaPagamentoDTO>> listar(@PathVariable Long restauranteId) {
+    public ResponseEntity<List<FormaPagamentoDTO>> listar(@PathVariable Long restauranteId) {
 
         var restaurante = restauranteService.buscarRestaurante(restauranteId);
         return ResponseEntity.status(HttpStatus.OK)
