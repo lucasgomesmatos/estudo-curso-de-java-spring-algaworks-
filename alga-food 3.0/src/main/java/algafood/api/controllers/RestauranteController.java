@@ -59,7 +59,7 @@ public class RestauranteController {
     @PutMapping("{restauranteId}")
     public ResponseEntity<RestauranteOutputDTO> atualizar(@PathVariable(value = "restauranteId") Long id, @RequestBody @Valid ParametrosRestauranteDTO parametrosRestauranteDTO) {
 
-       var restaurante =  restauranteService.buscarRestaurante(id);
+        var restaurante = restauranteService.buscarRestaurante(id);
 
         try {
             return ResponseEntity.status(HttpStatus.OK).body(restauranteService.atualizar(parametrosRestauranteDTO, restaurante));
@@ -89,6 +89,18 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("{restauranteId}/abertura")
+    public ResponseEntity<Void> abertura(@PathVariable(value = "restauranteId") Long id) {
+        restauranteService.abertura(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{restauranteId}/fechamento")
+    public ResponseEntity<Void> fechamento(@PathVariable(value = "restauranteId") Long id) {
+        restauranteService.fechamento(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("{restauranteId}")
     public ResponseEntity<RestauranteOutputDTO> atualizarParcial(@PathVariable(value = "restauranteId") Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
 
@@ -100,7 +112,7 @@ public class RestauranteController {
 
         mergeRestaurante(campos, restauranteAtual, request);
         validateRestaurante(restauranteAtual, "restaurante");
-        
+
         assert restauranteAtual != null;
         var restauranteDto = new ParametrosRestauranteDTO(restauranteAtual);
         return atualizar(id, restauranteDto);
@@ -111,7 +123,7 @@ public class RestauranteController {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
         validator.validate(restaurante, bindingResult);
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             throw new ValidacaoException(bindingResult);
         }
     }

@@ -9,7 +9,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,6 +46,8 @@ public class Restaurante {
 
     private Boolean ativo = true;
 
+    private Boolean aberto = true;
+
     // @JsonIgnore
     // @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne //(fetch = FetchType.LAZY)
@@ -74,6 +79,14 @@ public class Restaurante {
 
     public void inativar() {
         setAtivo(false);
+    }
+
+    public void fechamento() {
+        setAberto(false);
+    }
+
+    public void abertura() {
+        setAberto(true);
     }
 
     public void associarFormaPagamento(FormaPagamento formaPagamento) {

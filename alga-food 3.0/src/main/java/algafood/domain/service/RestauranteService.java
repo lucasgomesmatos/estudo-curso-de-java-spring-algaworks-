@@ -66,6 +66,7 @@ public class RestauranteService {
                 .cozinha(cozinha)
                 .endereco(endereco)
                 .ativo(true)
+                .aberto(true)
                 .build();
 
         return mapper.generalMapper(restauranteRepository.save(restaurante), RestauranteOutputDTO.class);
@@ -130,6 +131,19 @@ public class RestauranteService {
         var restaurante = buscarRestaurante(id);
         restaurante.inativar();
     }
+
+    @Transactional
+    public void abertura(Long id) {
+        var restaurante = buscarRestaurante(id);
+        restaurante.abertura();
+    }
+
+    @Transactional
+    public void fechamento(Long id) {
+        var restaurante = buscarRestaurante(id);
+        restaurante.fechamento();
+    }
+
 
     @Transactional
     public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {

@@ -1,5 +1,5 @@
 set
-foreign_key_checks = 0;
+    foreign_key_checks = 0;
 
 DELETE
 FROM cidade;
@@ -25,16 +25,24 @@ DELETE
 FROM usuario_grupo;
 
 set
-foreign_key_checks = 1;
+    foreign_key_checks = 1;
 
-alter table cidade auto_increment = 1;
-alter table cozinha auto_increment = 1;
-alter table estado auto_increment = 1;
-alter table forma_pagamento auto_increment = 1;
-alter table grupo auto_increment = 1;
-alter table permissao auto_increment = 1;
-alter table restaurante auto_increment = 1;
-alter table usuario auto_increment = 1;
+alter table cidade
+    auto_increment = 1;
+alter table cozinha
+    auto_increment = 1;
+alter table estado
+    auto_increment = 1;
+alter table forma_pagamento
+    auto_increment = 1;
+alter table grupo
+    auto_increment = 1;
+alter table permissao
+    auto_increment = 1;
+alter table restaurante
+    auto_increment = 1;
+alter table usuario
+    auto_increment = 1;
 
 
 insert into cozinha (id, nome)
@@ -69,12 +77,12 @@ insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_a
                          endereco_bairro, endereco_cep, endereco_logradouro, endereco_numero)
 values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp, true, 1, 'centro', '39000-000', 'Rua das Flores',
         '310');
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
-values (1, 'Cozinha Mineira', 9.5, 1, utc_timestamp, utc_timestamp, true);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
-values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)
-values (4, 'Cozinha Goiana', 0, 3, utc_timestamp, utc_timestamp, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto)
+values (1, 'Cozinha Mineira', 9.5, 1, utc_timestamp, utc_timestamp, true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto)
+values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto)
+values (4, 'Cozinha Goiana', 0, 3, utc_timestamp, utc_timestamp, true, true);
 
 insert into forma_pagamento (id, descricao)
 values (1, 'Cartão de crédito');
@@ -125,5 +133,6 @@ values ('Vendedor'),
        ('Compador');
 
 insert into usuario (data_cadastro, email, nome, senha)
-values (utc_timestamp, 'joao@gmail.com', 'João Silva', '123@123'), (utc_timestamp, 'maria@gmail.com', 'Maria Silva', '123@123'),
-                                                            (utc_timestamp, 'jose@gmail.com', 'José Silva', '123@123');
+values (utc_timestamp, 'joao@gmail.com', 'João Silva', '123@123'),
+       (utc_timestamp, 'maria@gmail.com', 'Maria Silva', '123@123'),
+       (utc_timestamp, 'jose@gmail.com', 'José Silva', '123@123');
