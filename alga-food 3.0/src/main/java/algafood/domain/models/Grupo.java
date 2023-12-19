@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +26,16 @@ public class Grupo {
             joinColumns = @JoinColumn(name = "grupo_id"),
             inverseJoinColumns = @JoinColumn(name = "permissao_id")
     )
-    private List<Permissao> permissoes = new ArrayList<>();
+    private Set<Permissao> permissoes = new HashSet<>();
+
+
+    public void associar(Permissao permissao) {
+        getPermissoes().add(permissao);
+    }
+
+    public void desassociar(Permissao permissao) {
+        getPermissoes().remove(permissao);
+    }
 
     @Override
     public boolean equals(Object o) {

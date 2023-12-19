@@ -21,6 +21,9 @@ public class GrupoService {
     private GrupoRepository grupoRepository;
 
     @Autowired
+    private PermissaoService permissaoService;
+
+    @Autowired
     private Mapper mapper;
 
 
@@ -32,6 +35,11 @@ public class GrupoService {
     public GrupoDTO buscar(Long id) {
         return mapper.generalMapper(buscarPorId(id), GrupoDTO.class);
     }
+
+    public Grupo buscarGrupo(Long id) {
+        return buscarPorId(id);
+    }
+
 
     public List<GrupoDTO> listar() {
         return mapper.mapCollection(grupoRepository.findAll(), GrupoDTO.class);
@@ -61,5 +69,21 @@ public class GrupoService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MensagensDeException.MENSAGEM_FORMA_GRUPO.getMensagem(), id));
         }
+    }
+
+    @Transactional
+    public void associarPermissao(Long grupoId, Long permissaoId) {
+        var grupo = buscarPorId(grupoId);
+        var permissao = permissaoService.buscarPermissao(permissaoId);
+
+        grupo.associar(permissao);
+    }
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+        var grupo = buscarPorId(grupoId);
+        var permissao = permissaoService.buscarPermissao(permissaoId);
+
+        grupo.desassociar(permissao);
     }
 }

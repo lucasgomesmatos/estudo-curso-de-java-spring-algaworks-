@@ -136,3 +136,10 @@ insert into usuario (data_cadastro, email, nome, senha)
 values (utc_timestamp, 'joao@gmail.com', 'João Silva', '123@123'),
        (utc_timestamp, 'maria@gmail.com', 'Maria Silva', '123@123'),
        (utc_timestamp, 'jose@gmail.com', 'José Silva', '123@123');
+
+insert into grupo_permissao(grupo_id, permissao_id)
+values (1, 1),
+       (2, 1),
+       (3, 1),
+       (1, 2),
+       (2, 2);
