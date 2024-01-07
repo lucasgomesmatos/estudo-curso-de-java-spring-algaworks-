@@ -33,6 +33,9 @@ public class RestauranteService {
     private FormaPagamentoService formaPagamentoService;
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     Mapper mapper;
 
     private Restaurante buscarPorId(Long id) {
@@ -159,4 +162,17 @@ public class RestauranteService {
         restaurante.desassociarFormaPagamento(formaPagamento);
     }
 
+    @Transactional
+    public void associarUsuario(Long restauranteId, Long usuarioId) {
+        var restaurante = buscarPorId(restauranteId);
+        var usuario = usuarioService.buscarUsuario(usuarioId);
+        restaurante.associarUsuario(usuario);
+    }
+
+    @Transactional
+    public void desassociarUsuario(Long restauranteId, Long usuarioId) {
+        var restaurante = buscarPorId(restauranteId);
+        var usuario = usuarioService.buscarUsuario(usuarioId);
+        restaurante.desassociarUsuario(usuario);
+    }
 }

@@ -25,12 +25,19 @@ public class UsuarioService {
     private UsuarioRespository usuarioRespository;
 
     @Autowired
+    private GrupoService grupoService;
+
+    @Autowired
     private Mapper mapper;
 
 
     private Usuario buscarPorId(Long id) {
         return usuarioRespository.findById(id)
                 .orElseThrow(() -> new UsuarioException(id));
+    }
+
+    public Usuario buscarUsuario(Long id) {
+        return buscarPorId(id);
     }
 
     private Usuario salvar(Usuario usuario) {
@@ -88,5 +95,21 @@ public class UsuarioService {
 
         usuarioAutal.setSenha(parametrosAtualizarSenhaUsuario.getNovaSenha());
         usuarioRespository.save(usuarioAutal);
+    }
+
+    @Transactional
+    public void associarPermissao(Long usuarioId, Long grupoId) {
+        var usuario = buscarPorId(usuarioId);
+        var grupo = grupoService.buscarGrupo(grupoId);
+
+        usuario.associar(grupo);
+    }
+
+    @Transactional
+    public void desassociarPermissao(Long usuarioId, Long grupoId) {
+        var usuario = buscarPorId(usuarioId);
+        var grupo = grupoService.buscarGrupo(grupoId);
+
+        usuario.desassociar(grupo);
     }
 }

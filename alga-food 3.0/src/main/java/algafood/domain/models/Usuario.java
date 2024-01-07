@@ -6,9 +6,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,7 +39,15 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id")
     )
-    private List<Grupo> grupos = new ArrayList<>();
+    private Set<Grupo> grupos = new HashSet<>();
+
+    public void associar(Grupo grupo) {
+        getGrupos().add(grupo);
+    }
+
+    public void desassociar(Grupo grupo) {
+        getGrupos().remove(grupo);
+    }
 
     @Override
     public boolean equals(Object o) {

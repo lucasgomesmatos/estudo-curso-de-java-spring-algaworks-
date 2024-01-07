@@ -143,3 +143,7 @@ values (1, 1),
        (3, 1),
        (1, 2),
        (2, 2);
+
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1,2), (2, 1);

@@ -72,6 +72,14 @@ public class Restaurante {
     @ToString.Exclude
     private List<Produto> produtos = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "restaurante_usuario_responsavel",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private Set<Usuario> usuarios = new HashSet<>();
+
 
     public void ativar() {
         setAtivo(true);
@@ -98,4 +106,11 @@ public class Restaurante {
     }
 
 
+    public void desassociarUsuario(Usuario usuario) {
+        getUsuarios().remove(usuario);
+    }
+
+    public void associarUsuario(Usuario usuario) {
+        getUsuarios().add(usuario);
+    }
 }
