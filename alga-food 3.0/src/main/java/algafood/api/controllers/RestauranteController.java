@@ -83,9 +83,22 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
+
     @DeleteMapping("{restauranteId}/ativo")
     public ResponseEntity<Void> inativar(@PathVariable(value = "restauranteId") Long id) {
         restauranteService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("ativacoes")
+    public ResponseEntity<Void> ativarMultiplos(@RequestParam List<Long> restauranteIds) {
+        restauranteService.ativar(restauranteIds);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("ativacoes")
+    public ResponseEntity<Void> inativarMultiplos(@RequestParam List<Long> restauranteIds) {
+        restauranteService.inativar(restauranteIds);
         return ResponseEntity.noContent().build();
     }
 

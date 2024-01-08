@@ -5,6 +5,7 @@ import algafood.api.dtos.output.RestauranteOutputDTO;
 import algafood.common.mapper.Mapper;
 import algafood.domain.common.MensagensDeException;
 import algafood.domain.exception.EntidadeEmUsoException;
+import algafood.domain.exception.NegocioException;
 import algafood.domain.exception.RestauranteNaoEncontradoException;
 import algafood.domain.models.Cozinha;
 import algafood.domain.models.Endereco;
@@ -130,9 +131,28 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void ativar(List<Long> restauranteIds) {
+        try {
+            restauranteIds.forEach(this::ativar);
+        } catch (RestauranteNaoEncontradoException exception) {
+            throw new NegocioException(exception.getMessage(), exception);
+        }
+    }
+
+
+    @Transactional
     public void inativar(Long id) {
         var restaurante = buscarRestaurante(id);
         restaurante.inativar();
+    }
+
+    @Transactional
+    public void inativar(List<Long> restauranteIds) {
+        try {
+            restauranteIds.forEach(this::inativar);
+        } catch (RestauranteNaoEncontradoException exception) {
+            throw new NegocioException(exception.getMessage(), exception);
+        }
     }
 
     @Transactional
